@@ -1,9 +1,7 @@
 package com.example.bhtduell;
 
 // imports for timer
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,8 +24,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
-import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
 // global variables
@@ -43,8 +39,8 @@ public class QuestionController implements Initializable {
     private Boolean player1_active = false;
     private Boolean player2_active = false;
 
-    @FXML
-    private Button load;
+    //@FXML
+    //private Button load;
 
 
     @FXML
@@ -76,6 +72,7 @@ public class QuestionController implements Initializable {
         loadQuestionAnswer(); // we begin with 0 here to get first question
         if (A_clicked == true){
             turn_player1.setText(player1_name);
+            turn_player2.setText(player2_name);
             turn_player2.setVisible(false);
             turn_player1.setVisible(true);
             player1_active = true;
@@ -83,6 +80,7 @@ public class QuestionController implements Initializable {
         }
         if (K_clicked == true){
             turn_player2.setText(player2_name);
+            turn_player1.setText(player1_name);
             turn_player1.setVisible(false);
             turn_player2.setVisible(true);
             player2_active = true;
@@ -94,7 +92,7 @@ public class QuestionController implements Initializable {
     // question_counter is increased to get next question from db
     @FXML
     private void loadQuestionAnswer() throws IOException, SQLException {
-
+        Boolean noData; // bool to put result into from getQuestion function -> do we get data from db or not (if it is last question we don't)
 
         clicked = false; // reset this here to false, so after loading new question fields are clickable again
 
@@ -104,13 +102,7 @@ public class QuestionController implements Initializable {
         answer_C.setStyle("-fx-background-color: #ffefd6");
         answer_D.setStyle("-fx-background-color: #ffefd6");
 
-        // also set fields to clickable again
-        answer_A.setDisable(false);
-        answer_B.setDisable(false);
-        answer_C.setDisable(false);
-        answer_D.setDisable(false);
-
-        if((player1_active != false) || (player2_active != false)) {
+         /*if((player1_active != false) || (player2_active != false)) {
             if (player1_active == true) {
                 // now player2 active because previously player 1 active
                 player2_active = true;
@@ -131,7 +123,7 @@ public class QuestionController implements Initializable {
                 System.out.println("player1 name " + player1_name);
 
             }
-        }
+        }*/
 
         // typecast from String to int
         question_counter = Integer.parseInt(primaryKeyQuestionAnswer);
@@ -139,49 +131,71 @@ public class QuestionController implements Initializable {
         System.out.println(primaryKeyQuestionAnswer + "  primary k q a");
 
         // set up question text field
-        Vector question_vec = JavaToDatabase.getQuestion(question_counter); // result set from query
+        //Vector question_vec = JavaToDatabase.getQuestion(question_counter); // result set from query
+        List returnList = JavaToDatabase.getQuestion(question_counter); // result set from query
+        // now get from List whether we get data from db -> boolean rsIsEmpty
+        noData = (Boolean) returnList.get(0);
+        if (noData == false) {
+            // now we know that there is stilla question to display
+            // we get the Vector from returnList
+            Vector question_vec = (Vector) returnList.get(1);
+            // element at index 0 of question_vec is the qu_ID from DB
+            primaryKeyQuestionAnswer = (String) question_vec.get(0);
+            //primaryKeyQuestion = Integer.parseInt(question_vec.get(0));
+            System.out.println(primaryKeyQuestionAnswer);
 
-        // element at index 0 of question_vec is the qu_ID from DB
-        primaryKeyQuestionAnswer = (String) question_vec.get(0);
-        //primaryKeyQuestion = Integer.parseInt(question_vec.get(0));
-        System.out.println(primaryKeyQuestionAnswer);
-
-        // set TextField for question
-        String qu = (String) question_vec.get(1);
-        System.out.println("qu  " + qu);
-        question_field.setText("");
-        question_field.setText(qu); // typecast to string
-        //question_field.setStyle("-fx-focus-color: transparent;");
+            // set TextField for question
+            String qu = (String) question_vec.get(1);
+            System.out.println("qu  " + qu);
+            question_field.setText("");
+            question_field.setText(qu); // typecast to string
+            //question_field.setStyle("-fx-focus-color: transparent;");
 
 
-        //System.out.println("answer_vec  " + answer_vec.toString());
-        // check if vector is not empty
+            //System.out.println("answer_vec  " + answer_vec.toString());
+            // check if vector is not empty
 
-        // set up answer text fields
-        Vector answer_vec = JavaToDatabase.getAnswers(question_counter);// result set from query
-        if(!answer_vec.isEmpty()) {
-            System.out.println("vector " + answer_vec.toString());
-            // set TextField for answer A
-            String asw_a = (String) answer_vec.get(0);
-            answer_A.setText(asw_a);
-            // set TextField for answer B
-            String asw_b = (String) answer_vec.get(1);
-            answer_B.setText(asw_b);
-            // set TextField for answer C
-            String asw_c = (String) answer_vec.get(2);
-            answer_C.setText(asw_c);
-            // set TextField for answer D
-            String asw_d = (String) answer_vec.get(3);
-            answer_D.setText(asw_d);
+            // set up answer text fields
+            Vector answer_vec = JavaToDatabase.getAnswers(question_counter);// result set from query
+            if (!answer_vec.isEmpty()) {
+                setWhichPlayerName();
+                System.out.println("vector " + answer_vec.toString());
+                // set TextField for answer A
+                String asw_a = (String) answer_vec.get(0);
+                answer_A.setText(asw_a);
+                // set TextField for answer B
+                String asw_b = (String) answer_vec.get(1);
+                answer_B.setText(asw_b);
+                // set TextField for answer C
+                String asw_c = (String) answer_vec.get(2);
+                answer_C.setText(asw_c);
+                // set TextField for answer D
+                String asw_d = (String) answer_vec.get(3);
+                answer_D.setText(asw_d);
 
-            System.out.println("Answer a disabled: " + answer_A.isDisabled());
+                System.out.println("Answer a disabled: " + answer_A.isDisabled());
+            } else {
+                System.out.println("vector " + answer_vec.toString());
+                //throw new RuntimeException(e);
+                System.out.println("no more answers to laod in database: " + question_counter);
+            }
+            // also set fields to clickable again
+            // we do this here so field become clickable after loading new question, else we run into errors
+            answer_A.setDisable(false);
+            answer_B.setDisable(false);
+            answer_C.setDisable(false);
+            answer_D.setDisable(false);
+
         }
-        else {
-            System.out.println("vector " + answer_vec.toString());
-            //throw new RuntimeException(e);
-            System.out.println("no more answers to laod in database");
-        }
 
+
+        else{
+            // we only land here if no more questions in db
+            // here I can start next mask then -> end game mask
+            // for now we print
+            System.out.println("No more questions to display: " + question_counter);
+            disableAllFields();
+        }
 
 
     }
@@ -202,7 +216,6 @@ public class QuestionController implements Initializable {
             //Boolean answerStatus = JavaToDatabase.answerTrueFalse(txt_a, primaryKeyQuestion);
             if (answerStatus == true) {
                 answer_A.setStyle("-fx-background-color: #70db70"); // set green
-                question_counter +=1;
                 primaryKeyQuestionAnswer = Integer.toString(question_counter);
 
             } else {
@@ -310,7 +323,7 @@ public class QuestionController implements Initializable {
                primaryKeyQuestionAnswer = Integer.toString(question_counter);
 
                try {
-                   Thread.sleep(1000);
+                   Thread.sleep(2500);
                } catch (InterruptedException e) {
                    throw new RuntimeException(e);
                }
@@ -329,6 +342,26 @@ public class QuestionController implements Initializable {
 
 
 
+
+    }
+
+    // function to set which player's turn it is currently -> this is displayed on mask
+    public void setWhichPlayerName(){
+        // in init(), we set which player is the first player based on the click competition -> this player's field is set visible
+        // we can now ask which field is visible
+        if(turn_player1.isVisible() == true){
+            turn_player2.setVisible(true);
+            turn_player2.setText(player2_name);
+            turn_player1.setVisible(false);
+
+
+        } else{
+            // in this case player2 did begin the game with first question
+            turn_player1.setVisible(true);
+            turn_player1.setText(player1_name);
+            turn_player2.setVisible(false);
+
+        }
 
     }
 

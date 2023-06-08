@@ -6,7 +6,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #ffedd1;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bhtduell.QuestionController">
    <top>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="425.0" prefWidth="600.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
             <children>
             <Label fx:id="turn_player1" layoutX="31.0" layoutY="39.0" prefHeight="17.0" prefWidth="100.0" />
             <TextField fx:id="question_field" alignment="CENTER" layoutX="57.0" layoutY="137.0" prefHeight="25.0" prefWidth="482.0" style="-fx-background-color: #ffb3a3;" />
@@ -41,11 +41,6 @@
                         <Font name="System Bold" size="12.0" />
                     </font>
                 </Label>
-                <Button fx:id="load" layoutX="421.0" layoutY="338.0" mnemonicParsing="false" onAction="#loadQuestionAnswer" prefHeight="25.0" prefWidth="119.0" style="-fx-background-color: #ffb3a3;" text="LOAD QUESTION" textFill="#1b1b1bd4">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </Button>
             <Label fx:id="turn_player2" layoutX="450.0" layoutY="34.0" prefHeight="17.0" prefWidth="94.0" />
             </children>
         </AnchorPane>

@@ -1,6 +1,8 @@
 package com.example.bhtduell;
 
 import java.sql.*; //Any source file that uses JDBC needs to import the java.sql package
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,7 +62,14 @@ public class JavaToDatabase {
         }
     }
 
-    public static Vector getQuestion(int question_counter) {
+    public static <Obj> List<Obj> getQuestion(int question_counter) {
+        // create List to return
+        // this will then contain Vector and boolean
+        List<Obj> resultList = new ArrayList<Obj>();
+
+        // boolean to check if ResultSet is empty or not, i.e. if data comes back from db
+        Boolean rsIsEmpty;
+
 
         // db connection
         /*String url = "jdbc:postgresql://localhost:5432/postgres"; // follow schema: jdbc:postgresql://host:port/database
@@ -89,32 +98,87 @@ public class JavaToDatabase {
             // Vector for question
             questionVector = new Vector();
 
-            while (true) {
-                if (rs.next() != false) {
-                    System.out.print("Column 1 returned ");
-                    System.out.println(rs.getString("qu_text"));
-                    // add column w question text to vector
-                    questionVector.addElement(new String(rs.getString(1)));
-                    questionVector.addElement(new String(rs.getString(2)));
+            rsIsEmpty = true;
+            while(rs.next()){
+                rsIsEmpty = false; // while in here ResultSet is not empty
+                //System.out.print("Column 1 returned ");
+                //System.out.println(rs.getString("qu_text"));
+                // add column w question text to vector
+                questionVector.addElement(new String(rs.getString(1)));
+                questionVector.addElement(new String(rs.getString(2)));
 
-                } else {
-                    // could start congratulation scene here later
-                    System.out.println("reached the end");
-                }
-                rs.close();
-                prepared.close();
-                return questionVector;
+            }
+            resultList.add(0, (Obj) rsIsEmpty);
+            resultList.add(1, (Obj) questionVector);
+            rs.close();
+            prepared.close();
+            return resultList; //questionVector;
+
+            } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    } /*catch (SQLException except) {
+            Logger logger = Logger.getLogger(JavaToDatabase.class.getName());
+            logger.log(Level.SEVERE, except.getMessage(), except);
+            return null;
+        }*/
+
+    //}
+
+
+    // copy of function for safety
+    /*public static Vector getQuestion(int question_counter) {
+
+        // db connection
+        *//*String url = "jdbc:postgresql://localhost:5432/postgres"; // follow schema: jdbc:postgresql://host:port/database
+        String user = "postgres";
+        String pwd = "BHT2023";*//*
+        Vector DBConnectData = connectData();
+        String url = (String) DBConnectData.get(0);
+        String user = (String) DBConnectData.get(1);
+        String pwd = (String) DBConnectData.get(2);
+
+        String query_question = "SELECT \"qu_ID\", \"qu_text\" FROM game.\"Questions\"\n" +
+                "WHERE \"qu_ID\"=?;";
+        System.out.println(query_question);
+        Vector questionVector;
+        try (Connection connection = DriverManager.getConnection(url, user, pwd);
+             // Get question from DB
+             PreparedStatement prepared = connection.prepareStatement(query_question)) {
+            // get question and answer text from db
+            // question_counter is in this case also id of question in database
+            prepared.setInt(1, question_counter); // one is the question mark in query
+            ResultSet rs = prepared.executeQuery();
+
+            // Vector class implements a growable array of objects
+            // we use it to add results from ResultSet to it => the results from db query
+            // because ResultSet is difficult to access after
+            // Vector for question
+            questionVector = new Vector();
+
+
+            while(rs.next()){
+                System.out.print("Column 1 returned ");
+                System.out.println(rs.getString("qu_text"));
+                // add column w question text to vector
+                questionVector.addElement(new String(rs.getString(1)));
+                questionVector.addElement(new String(rs.getString(2)));
 
             }
 
 
-        } catch (SQLException except) {
-            Logger logger = Logger.getLogger(JavaToDatabase.class.getName());
-            logger.log(Level.SEVERE, except.getMessage(), except);
-            return null;
+            rs.close();
+            prepared.close();
+            return questionVector;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
-    }
+
+    }*/
     public static Vector getAnswers ( int qu_counter){
         Vector DBConnectData = connectData();
         String url = (String) DBConnectData.get(0);
