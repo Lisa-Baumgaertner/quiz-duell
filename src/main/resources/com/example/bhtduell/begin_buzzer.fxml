@@ -27,11 +27,11 @@
             <Button fx:id="keypress_k" layoutX="434.0" layoutY="161.0" mnemonicParsing="false" onKeyPressed="#whichKeyPressed" opacity="0.0" text="Button" />
             <Label fx:id="press_player1" layoutX="61.0" layoutY="132.0" prefHeight="17.0" prefWidth="71.0" text="Label" />
             <Label fx:id="press_player2" layoutX="362.0" layoutY="132.0" prefHeight="17.0" prefWidth="71.0" text="Label" />
-               <!-- <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="225.0" layoutY="178.0" pickOnBounds="true" preserveRatio="true">
+               <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="225.0" layoutY="178.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="C:\Users\Uni\Downloads\pngwing.com.png" />
+                        <Image url="@../../../img/buzzer.png" />
                     </image>
-                </ImageView>-->
+                </ImageView>
             </children>
         </AnchorPane>
    </left>

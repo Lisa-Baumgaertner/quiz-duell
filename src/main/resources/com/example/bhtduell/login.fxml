@@ -8,16 +8,16 @@
     <left>
         <AnchorPane prefHeight="200.0" prefWidth="170.0" BorderPane.alignment="CENTER">
             <children>
-                <!--<ImageView fx:id="login_image_1" fitHeight="216.0" fitWidth="218.0" layoutY="-14.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fx:id="login_image_1" fitHeight="216.0" fitWidth="218.0" layoutY="-14.0" pickOnBounds="true" preserveRatio="true">
                    <image>
-                      <Image url="@/img/logo_draft.png" />
+                      <Image url="@../../../img/logo_draft.png" />
                    </image>
-                </ImageView>-->
-                <!--<ImageView fx:id="login_image_2" fitHeight="150.0" fitWidth="200.0" layoutX="34.0" layoutY="236.0" pickOnBounds="true" preserveRatio="true">
+                </ImageView>
+                <ImageView fx:id="login_image_2" fitHeight="150.0" fitWidth="200.0" layoutX="34.0" layoutY="236.0" pickOnBounds="true" preserveRatio="true">
                    <image>
-                      <Image url="@/img/questionmark.png" />
+                      <Image url="@../../../img/questionmark.png" />
                    </image>
-                </ImageView>-->
+                </ImageView>
             </children>
         </AnchorPane>
     </left>
