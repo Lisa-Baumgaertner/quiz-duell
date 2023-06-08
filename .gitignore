@@ -36,3 +36,9 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Specific build files
+pom.xml
+mvnw.cmd
+mvnw
+.mvn

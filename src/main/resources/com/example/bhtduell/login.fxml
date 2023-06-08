@@ -3,17 +3,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bhtduell.Controller">
     <left>
         <AnchorPane prefHeight="200.0" prefWidth="170.0" BorderPane.alignment="CENTER">
             <children>
-                <ImageView fx:id="login_image_1" fitHeight="216.0" fitWidth="218.0" layoutY="-14.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="216.0" fitWidth="218.0" layoutY="-14.0" pickOnBounds="true" preserveRatio="true">
                    <image>
                       <Image url="@../../../img/logo_draft.png" />
                    </image>
                 </ImageView>
-                <ImageView fx:id="login_image_2" fitHeight="150.0" fitWidth="200.0" layoutX="34.0" layoutY="236.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="34.0" layoutY="236.0" pickOnBounds="true" preserveRatio="true">
                    <image>
                       <Image url="@../../../img/questionmark.png" />
                    </image>
