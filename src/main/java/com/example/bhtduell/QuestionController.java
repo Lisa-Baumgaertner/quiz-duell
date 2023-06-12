@@ -136,7 +136,7 @@ public class QuestionController implements Initializable {
         // now get from List whether we get data from db -> boolean rsIsEmpty
         noData = (Boolean) returnList.get(0);
         if (noData == false) {
-            // now we know that there is stilla question to display
+            // now we know that there is still a question to display
             // we get the Vector from returnList
             Vector question_vec = (Vector) returnList.get(1);
             // element at index 0 of question_vec is the qu_ID from DB
@@ -212,15 +212,21 @@ public class QuestionController implements Initializable {
             // then get primaryKeyQuestion variable bc it contains primary key of question in DB
             //primaryKeyQuestion = String.valueOf(Integer.getInteger(primaryKeyQuestion));
             System.out.println("primary key question answer  " + primaryKeyQuestionAnswer);
+            // we use answer text and question ID to identify answer and answer_Id -> to know if answer given is true or false
+            // we need to trace ack to question with just question_Id and text of clicked answer
             Boolean answerStatus = JavaToDatabase.answerTrueFalse(txt_a, Integer.parseInt(primaryKeyQuestionAnswer));
             //Boolean answerStatus = JavaToDatabase.answerTrueFalse(txt_a, primaryKeyQuestion);
             if (answerStatus == true) {
                 answer_A.setStyle("-fx-background-color: #70db70"); // set green
                 primaryKeyQuestionAnswer = Integer.toString(question_counter);
+                String activeUser = getActiveUser();
+                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), txt_a ,  answerStatus);
 
             } else {
                 answer_A.setStyle("-fx-background-color: #ff5c33"); // set red
-                // disable all fields so answer can not be changed anymore
+                String activeUser = getActiveUser();
+                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), txt_a ,  answerStatus);
+
             }
             // disable all fields after answer was given
             disableAllFields();
@@ -242,8 +248,12 @@ public class QuestionController implements Initializable {
             //Boolean answerStatus = JavaToDatabase.answerTrueFalse(txt_b,primaryKeyQuestion);
             if (answerStatus == true) {
                 answer_B.setStyle("-fx-background-color: #70db70");
+                String activeUser = getActiveUser();
+                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), txt_b ,  answerStatus);
             } else {
                 answer_B.setStyle("-fx-background-color: #ff5c33");
+                String activeUser = getActiveUser();
+                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), txt_b ,  answerStatus);
             }
             // disable all fields after answer was given
             disableAllFields();
@@ -264,8 +274,12 @@ public class QuestionController implements Initializable {
             //Boolean answerStatus = JavaToDatabase.answerTrueFalse(txt_c, primaryKeyQuestion);
             if (answerStatus == true) {
                 answer_C.setStyle("-fx-background-color: #70db70");
+                String activeUser = getActiveUser();
+                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), txt_c ,  answerStatus);
             } else {
                 answer_C.setStyle("-fx-background-color: #ff5c33");
+                String activeUser = getActiveUser();
+                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), txt_c ,  answerStatus);
             }
             // disable all fields after answer was given
             disableAllFields();
@@ -286,8 +300,12 @@ public class QuestionController implements Initializable {
             //Boolean answerStatus = JavaToDatabase.answerTrueFalse(txt_d, primaryKeyQuestion);
             if (answerStatus == true) {
                 answer_D.setStyle("-fx-background-color: #70db70");
+                String activeUser = getActiveUser();
+                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), txt_d ,  answerStatus);
             } else {
                 answer_D.setStyle("-fx-background-color: #ff5c33");
+                String activeUser = getActiveUser();
+                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), txt_d ,  answerStatus);
             }
             // disable all fields after answer was given
             disableAllFields();
@@ -364,6 +382,20 @@ public class QuestionController implements Initializable {
         }
 
     }
+
+    // function that returns which player is currently visible, i.e. which player's turn it currently is
+    public String getActiveUser(){
+        // we can now ask which field is visible
+        if(turn_player1.isVisible() == true){
+            return player1_name;
+
+        }
+        else{
+            return player2_name;
+        }
+
+    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

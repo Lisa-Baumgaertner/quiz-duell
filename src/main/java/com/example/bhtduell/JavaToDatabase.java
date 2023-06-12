@@ -270,15 +270,59 @@ public class JavaToDatabase {
         return null;
     }
 
+    // function to keep track of scores
+    public static void trackScore(String username, Integer game_qu_ID, String asw_txt, Boolean answerStatus){
+        // collects necessary data and inserts into db
+
+        Integer points;
+        // convert boolean answerStatus to 0 or 1 as points
+        if (answerStatus == true){
+            points = 1;
+        } else {
+            points = 0;
+        }
+
+        Vector DBConnectData = connectData();
+        String url = (String) DBConnectData.get(0);
+        String user = (String) DBConnectData.get(1);
+        String pwd = (String) DBConnectData.get(2);
+
+        // the query
+        //String query = "INSERT INTO game.\"Player\" (player_username) VALUES (?)";
+        String query ="INSERT INTO game.\"Games\" (game_round, \"game_pl_ID\", \"game_qu_ID\", \"game_asw_ID\", game_points)" +
+                      " VALUES (?," +
+                      "(SELECT \"player_ID\" FROM game.\"Player\" WHERE player_username = ?)," +
+                      "?," +
+                      "(SELECT \"asw_ID\" FROM game.\"Answers\"" +
+                      " WHERE \"asw_text\"=? AND \"asw_qu_ID\"=?), ?);";
+
+        System.out.println(query);
+
+        try (Connection connection = DriverManager.getConnection(url, user, pwd);
+             PreparedStatement prepared = connection.prepareStatement(query)) {
+            // round, currently fixed but needs to be changed
+            prepared.setInt(1, 2);
+            // username to get player_ID
+            prepared.setString(2, username);
+            // game_qu_ID
+            prepared.setInt(3, game_qu_ID );
+            //asw_txt
+            prepared.setString(4, asw_txt);
+            //game_asw_ID
+            prepared.setInt(5,  game_qu_ID);
+            // game_points
+            prepared.setInt(6, points );
+            prepared.executeUpdate();
+
+            System.out.println("Action was successful!");
 
 
+        } catch (SQLException except) {
+            Logger logger = Logger.getLogger(JavaToDatabase.class.getName());
+            logger.log(Level.SEVERE, except.getMessage(), except);
+        }
 
-
-
-
-
-
-
+    }
 
 
 
@@ -289,8 +333,4 @@ public class JavaToDatabase {
 
 
     }
-//}
 
-    //}
-
-//}
