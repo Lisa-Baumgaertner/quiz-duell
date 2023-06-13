@@ -23,7 +23,37 @@ public class JavaToDatabase {
         return data;
 
     }
+    public static Boolean verifyPlayerNameExists(String username) {
+        // connect to db
+        Vector DBConnectData = connectData();
+        String url = (String) DBConnectData.get(0);
+        String user = (String) DBConnectData.get(1);
+        String pwd = (String) DBConnectData.get(2);
 
+        String playername = username;
+        Boolean status = true;
+
+        // the query
+        String query_verifyName = "SELECT EXISTS ( SELECT * FROM game.\"Player\" WHERE \"player_username\"=\'" +
+                playername + "\') AS exists;";
+        System.out.println("QUERY" + query_verifyName);
+
+        try (Connection connection = DriverManager.getConnection(url, user, pwd);
+             // Get answers from DB
+             PreparedStatement prepared = connection.prepareStatement(query_verifyName)) {
+            // if exists return true else false as db vector
+            ResultSet rs = prepared.executeQuery();
+            status = rs.getBoolean(1); // ToDo check if columnIndex starts with 0, then enter 0
+            rs.close();
+
+        } catch (SQLException except) {
+            Logger logger = Logger.getLogger(JavaToDatabase.class.getName());
+            logger.log(Level.SEVERE, except.getMessage(), except);
+            return null;
+        }
+
+        return status;
+    }
     public static void writePlayerToDB(String username_1, String username_2) {
 
         // set up for db
@@ -38,9 +68,17 @@ public class JavaToDatabase {
         String playername_1 = username_1;
         String playername_2 = username_2;
 
+        // verify player names don't exist already in DB
+        // ToDo use for loop on list
+        // ToDo implement error message / exception
+        if (verifyPlayerNameExists(playername_1)==true) {
+            System.out.println(playername_1 + " exists already!");
+        }
+        if (verifyPlayerNameExists(playername_2)==true) {
+            System.out.println(playername_2 + " exists already!");
+        }
         // the query
         String query = "INSERT INTO game.\"Player\" (player_username) VALUES (?)";
-
 
         try (Connection connection = DriverManager.getConnection(url, user, pwd);
              PreparedStatement prepared = connection.prepareStatement(query)) {
