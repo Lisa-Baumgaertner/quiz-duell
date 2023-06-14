@@ -6,16 +6,15 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #ffedd1;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bhtduell.QuestionController">
    <top>
-        <AnchorPane prefHeight="425.0" prefWidth="600.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
+        <AnchorPane fx:id="pane" prefHeight="425.0" prefWidth="600.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
             <children>
             <Label fx:id="turn_player1" layoutX="31.0" layoutY="39.0" prefHeight="17.0" prefWidth="100.0" />
-            <TextField fx:id="question_field" alignment="CENTER" layoutX="57.0" layoutY="137.0" prefHeight="25.0" prefWidth="482.0" style="-fx-background-color: #ffb3a3;" />
                 <Label layoutX="214.0" layoutY="14.0" text="Can you answer this question?" textFill="#40382f">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
                 </Label>
-                <ProgressBar layoutX="186.0" layoutY="78.0" prefHeight="20.0" prefWidth="227.0" progress="0.82" style="--fx-accent: #40382f;" />
+                <ProgressBar fx:id="progressBar" layoutX="186.0" layoutY="78.0" prefHeight="20.0" prefWidth="227.0" progress="0.0" style="--fx-accent: #40382f;" />
                 <TextField fx:id="answer_A" alignment="CENTER" editable="false" layoutX="58.0" layoutY="186.0" onMouseClicked="#AClicked" prefHeight="28.0" prefWidth="483.0" style="-fx-background-color: #ffefd6;">
                     <font>
                         <Font name="SansSerif Bold" size="12.0" />
@@ -42,6 +41,8 @@
                     </font>
                 </Label>
             <Label fx:id="turn_player2" layoutX="450.0" layoutY="34.0" prefHeight="17.0" prefWidth="94.0" />
+            <Button fx:id="go_final_btn" layoutX="388.0" layoutY="352.0" mnemonicParsing="false" onAction="#Click_final" opacity="0.0" text="Button" />
+            <TextArea fx:id="question_field" editable="false" layoutX="58.0" layoutY="125.0" prefHeight="50.0" prefWidth="485.0" style="-fx-control-inner-background: #ffb3a3;" wrapText="true" />
             </children>
         </AnchorPane>
    </top>

@@ -290,7 +290,7 @@ public class JavaToDatabase {
         // the query
         //String query = "INSERT INTO game.\"Player\" (player_username) VALUES (?)";
         String query ="INSERT INTO game.\"Games\" (game_round, \"game_pl_ID\", \"game_qu_ID\", \"game_asw_ID\", game_points)" +
-                      " VALUES (?," +
+                      " VALUES ((SELECT round FROM game.\"Game_control\" WHERE \"control_ID\" = 0)," +
                       "(SELECT \"player_ID\" FROM game.\"Player\" WHERE player_username = ?)," +
                       "?," +
                       "(SELECT \"asw_ID\" FROM game.\"Answers\"" +
@@ -301,17 +301,17 @@ public class JavaToDatabase {
         try (Connection connection = DriverManager.getConnection(url, user, pwd);
              PreparedStatement prepared = connection.prepareStatement(query)) {
             // round, currently fixed but needs to be changed
-            prepared.setInt(1, 2);
+            //prepared.setInt(1, 2);
             // username to get player_ID
-            prepared.setString(2, username);
+            prepared.setString(1, username);
             // game_qu_ID
-            prepared.setInt(3, game_qu_ID );
+            prepared.setInt(2, game_qu_ID );
             //asw_txt
-            prepared.setString(4, asw_txt);
+            prepared.setString(3, asw_txt);
             //game_asw_ID
-            prepared.setInt(5,  game_qu_ID);
+            prepared.setInt(4,  game_qu_ID);
             // game_points
-            prepared.setInt(6, points );
+            prepared.setInt(5, points );
             prepared.executeUpdate();
 
             System.out.println("Action was successful!");
@@ -324,11 +324,113 @@ public class JavaToDatabase {
 
     }
 
+    // function to update round in Game_control table in Db
+    // round automatically increased by 1
+    public static void updateControlRound(){
+        Vector DBConnectData = connectData();
+        String url = (String) DBConnectData.get(0);
+        String user = (String) DBConnectData.get(1);
+        String pwd = (String) DBConnectData.get(2);
+
+        // the query
+        String query ="UPDATE game.\"Game_control\" SET round = round + 1\n" +
+                "WHERE \"control_ID\" = 0;";
+
+        //System.out.println(query);
+
+        try (Connection connection = DriverManager.getConnection(url, user, pwd);
+             PreparedStatement prepared = connection.prepareStatement(query)) {
+            prepared.executeUpdate();
+
+            System.out.println("Action was successful!");
+
+
+        } catch (SQLException except) {
+            Logger logger = Logger.getLogger(JavaToDatabase.class.getName());
+            logger.log(Level.SEVERE, except.getMessage(), except);
+        }
+
+    }
+
+    // function to update last_qu_ID in Game_control table in Db
+    public static void updateControlLastQuestion(int lastquestion_ID){
+        Vector DBConnectData = connectData();
+        String url = (String) DBConnectData.get(0);
+        String user = (String) DBConnectData.get(1);
+        String pwd = (String) DBConnectData.get(2);
+
+        // the query
+        //String query = "INSERT INTO game.\"Player\" (player_username) VALUES (?)";
+        String query ="UPDATE game.\"Game_control\" SET \"last_qu_ID\" = ?\n" +
+                "WHERE \"control_ID\" = 0;";
+
+        //System.out.println(query);
+
+        try (Connection connection = DriverManager.getConnection(url, user, pwd);
+             PreparedStatement prepared = connection.prepareStatement(query)) {
+            // set round
+            prepared.setInt(1, lastquestion_ID);
+            prepared.executeUpdate();
+
+            System.out.println("Action was successful!");
+
+
+        } catch (SQLException except) {
+            Logger logger = Logger.getLogger(JavaToDatabase.class.getName());
+            logger.log(Level.SEVERE, except.getMessage(), except);
+        }
+
+    }
+
+    // function to get the final score of game (which player won)
+    public static Vector getGameResult(){
+        Vector DBConnectData = connectData();
+        String url = (String) DBConnectData.get(0);
+        String user = (String) DBConnectData.get(1);
+        String pwd = (String) DBConnectData.get(2);
+
+        // get scores
+        String query ="SELECT player_username, SUM(game_points) FROM game.\"Games\"\n" +
+                      "JOIN game.\"Player\" ON \"player_ID\" = \"game_pl_ID\"\n" +
+                      "WHERE game_round = (SELECT round FROM game.\"Game_control\" WHERE \"control_ID\" = 0)\n" +
+                      "GROUP BY player_username\n" +
+                      "ORDER BY SUM(game_points) DESC";
+
+        //System.out.println(query);
+
+        try (Connection connection = DriverManager.getConnection(url, user, pwd);
+             PreparedStatement prepared = connection.prepareStatement(query)) {
+            // set round
+            //prepared.setInt(1, 3);
+            prepared.executeQuery();
+
+            Vector winnerVector = new Vector();
+            ResultSet rs = prepared.executeQuery();
+            System.out.println("Action was successful!");
+            while (rs.next()) {
+                System.out.print("Column 1 returned ");
+                //System.out.print(rs.getBoolean("asw_is_correct"));
+                winnerVector.addElement(new String(rs.getString(1)));
+                winnerVector.addElement(new String(String.valueOf(rs.getInt(2))));
+
+                System.out.print(rs.getString("player_username"));
+                System.out.print(rs.getInt("sum"));
+
+            }
+
+            rs.close();
+            prepared.close();
+            return winnerVector;
+
+        } catch (SQLException except) {
+            Logger logger = Logger.getLogger(JavaToDatabase.class.getName());
+            logger.log(Level.SEVERE, except.getMessage(), except);
+            return null;
+        }
 
 
 
-
-
+    }
 
 
 
