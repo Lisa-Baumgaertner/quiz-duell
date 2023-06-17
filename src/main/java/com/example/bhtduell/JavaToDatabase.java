@@ -433,6 +433,50 @@ public class JavaToDatabase {
     }
 
 
+    // function to get highscores across all rounds -> who has the highest amount of points across all games played
+    public static String getResultsHighscore(){
+        Vector DBConnectData = connectData();
+        String url = (String) DBConnectData.get(0);
+        String user = (String) DBConnectData.get(1);
+        String pwd = (String) DBConnectData.get(2);
+
+        // get scores
+        String query ="SELECT player_username, SUM(game_points) as score FROM game.\"Games\"\n" +
+                "JOIN game.\"Player\" ON \"game_pl_ID\"=\"player_ID\"\n" +
+                "GROUP BY player_username\n" +
+                "ORDER BY score desc\n" +
+                "LIMIT 5";
+
+        try (Connection connection = DriverManager.getConnection(url, user, pwd);
+             PreparedStatement prepared = connection.prepareStatement(query)) {
+            // set round
+            //prepared.setInt(1, 3);
+            prepared.executeQuery();
+
+            String result_str_highscore = "";
+            ResultSet rs = prepared.executeQuery();
+            while (rs.next()) {
+                // create string from results
+                result_str_highscore += String.format("    %-40s %s\n",(new String(rs.getString(1))), new String(String.valueOf(rs.getInt(2))));
+
+            }
+
+            rs.close();
+            prepared.close();
+            System.out.println(result_str_highscore);
+            return result_str_highscore;
+
+        } catch (SQLException except) {
+            Logger logger = Logger.getLogger(JavaToDatabase.class.getName());
+            logger.log(Level.SEVERE, except.getMessage(), except);
+            return null;
+        }
+
+
 
     }
+
+
+
+}
 

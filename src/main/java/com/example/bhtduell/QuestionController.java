@@ -207,9 +207,24 @@ public class QuestionController implements Initializable {
 
                     System.out.println("Answer a disabled: " + answer_A.isDisabled());
                 } else {
+
                     System.out.println("vector " + answer_vec.toString());
                     //throw new RuntimeException(e);
                     System.out.println("no more answers to laod in database: " + question_counter);
+
+                    // land here if there are no more questions in the database to load -> head to final mask
+                    // use PauseTransition to wait before triggering click button on our invisible go_final_button
+                    // so we do not immediately skip to game results, but first see how last question was answered
+/*
+                    PauseTransition pt = new PauseTransition(Duration.seconds(3));
+                    pt.setOnFinished(e -> {
+                        go_final_btn.fire(); // trigger button
+                    });
+                    pt.play();
+*/
+                    //go_final_btn.fire();
+
+
                 }
                 // also set fields to clickable again
                 // we do this here so field become clickable after loading new question, else we run into errors
@@ -221,9 +236,22 @@ public class QuestionController implements Initializable {
             } else {
                 // we only land here if no more questions in db
                 // here I can start next mask then -> end game mask
-                // for now we print
-                System.out.println("No more questions to display: " + question_counter);
+
+                // set global var to 0, because if no more questions in db, and players want to start again we need to start at question 0
+                // else error
+                Integer temp_question_counter = 0;
+                temp_question_counter = Integer.parseInt(primaryKeyQuestionAnswer);
+                temp_question_counter= 0;
+                primaryKeyQuestionAnswer = Integer.toString(temp_question_counter);
+
                 disableAllFields();
+                PauseTransition pt = new PauseTransition(Duration.seconds(3));
+                pt.setOnFinished(e -> {
+                    go_final_btn.fire(); // trigger button
+                });
+                pt.play();
+
+
             }
 
             JavaToDatabase.updateControlLastQuestion(question_counter);
@@ -284,6 +312,7 @@ public class QuestionController implements Initializable {
                 });
                 pt.play();
 
+                //o_final_btn.fire();
 
             }
         }
@@ -302,7 +331,7 @@ public class QuestionController implements Initializable {
             throw new RuntimeException(e);
         }
         System.out.println("Click final 4");
-        Stage window = (Stage) answer_A.getScene().getWindow();// typecast to Stage
+        Stage window = (Stage) go_final_btn.getScene().getWindow();// typecast to Stage
         window.setScene((new Scene(root)));
         System.out.println("Click final 5");
   //      root = FXMLLoader.load(getClass().getResource("question.fxml"));

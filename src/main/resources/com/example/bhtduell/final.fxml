@@ -4,6 +4,8 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="405.0" prefWidth="600.0" style="-fx-background-color: #ffe6cc;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bhtduell.finalController">
     <bottom>
@@ -14,12 +16,12 @@
                         <Image url="@../../../img/CongratulationPicture.png" />
                     </image>
                 </ImageView>
-                <Button fx:id="highscore_button" layoutX="358.0" layoutY="335.0" mnemonicParsing="false" text="HIGHSCORE">
+                <Button fx:id="highscore_button" layoutX="358.0" layoutY="335.0" mnemonicParsing="false" onAction="#highscoreClicked" text="HIGHSCORE">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
                 </Button>
-                <Button fx:id="newgame_button" layoutX="183.0" layoutY="335.0" mnemonicParsing="false" text="NEW GAME">
+                <Button fx:id="newgame_button" layoutX="183.0" layoutY="335.0" mnemonicParsing="false" onAction="#newGameClicked" text="NEW GAME">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
@@ -28,9 +30,9 @@
                <font>
                   <Font size="19.0" />
                </font></Label>
-            <Label fx:id="loser_label" alignment="CENTER" layoutX="415.0" layoutY="147.0" prefHeight="27.0" prefWidth="170.0">
+            <Label fx:id="loser_label" alignment="CENTER" layoutX="415.0" layoutY="147.0" prefHeight="27.0" prefWidth="170.0" text="hgfh">
                <font>
-                  <Font size="18.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Label>
               <Label fx:id="final_score" alignment="CENTER" layoutX="266.0" layoutY="189.0" prefHeight="34.0" prefWidth="98.0" text="dshjd">
@@ -38,9 +40,9 @@
                   <Font name="System Bold" size="30.0" />
                </font>
             </Label>
-            <Label fx:id="winner_label" alignment="CENTER" layoutX="56.0" layoutY="147.0" prefHeight="27.0" prefWidth="149.0">
+            <Label fx:id="winner_label" alignment="CENTER" layoutX="56.0" layoutY="147.0" prefHeight="27.0" prefWidth="149.0" text="yxcy">
                <font>
-                  <Font size="18.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Label>
             <ImageView fx:id="congrats_pic" fitHeight="150.0" fitWidth="200.0" layoutX="258.0" layoutY="-16.0" pickOnBounds="true" preserveRatio="true" />
