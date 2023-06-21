@@ -3,8 +3,7 @@ package com.example.bhtduell;
 // imports for timer
 import java.util.*;
 
-import javafx.animation.PauseTransition;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.concurrent.Task;
@@ -79,6 +78,9 @@ public class QuestionController implements Initializable {
 
     double progress;
 
+    @FXML
+    private Button timer_trigger;
+
     // this needs to be String otherwise we have problems later on with the vectors => fails with int
     public static String primaryKeyQuestionAnswer="0";
     //public static int primaryKeyQuestion;
@@ -108,8 +110,55 @@ public class QuestionController implements Initializable {
             player1_active = false;
         }
 
+        for(int i = 0; i <= 10; i++){
+            PauseTransition pt = new PauseTransition(Duration.seconds(1));
+            pt.setOnFinished(e -> {
+                timer_trigger.fire(); // trigger button
+            });
+            pt.play();
+
+
+        }
+
+        /*// implement progress bar
+        progressBar.setStyle("-fx-accent: red");
+        float current_progress = 0f;
+        for(int i = 0; i < 10; i++)  {
+            current_progress += 0.02;
+            progressBar.setProgress(current_progress);
+        }*/
+
+
+
+//        Timeline timeline = new Timeline(
+//                new KeyFrame(Duration.ZERO, new KeyValue(progressBar.progressProperty(), 0)),
+//                new KeyFrame(Duration.minutes(0.3), e-> {
+//                    // do anything you need here on completion...
+//                    PauseTransition pt = new PauseTransition(Duration.seconds(3));
+//                    pt.setOnFinished(event -> {
+//                        loadNextQuestion(); // trigger button
+//                    });
+//                    pt.play();
+//                    System.out.println("Minute over");
+//
+//
+//                }, new KeyValue(progressBar.progressProperty(), 1))
+//        );
+//        timeline.setCycleCount(15);
+//        timeline.play();
+
     }
 
+    @FXML
+    public void myTimer(ActionEvent e){
+        // set progress to different level of progressbar
+        double ii = 0.0;
+        ii += 0.1;
+        progressBar.setProgress(ii);
+
+
+
+    }
     // function to decrease progress in Progress bar -> time running out
     public void decreaseProgress(){
 
@@ -122,6 +171,23 @@ public class QuestionController implements Initializable {
     // question_counter is increased to get next question from db
     @FXML
     private void loadQuestionAnswer() throws IOException, SQLException {
+
+        //progressBar.setProgress(0.0);
+//        timeline.setOnFinished(event -> {
+//            PauseTransition wait = new PauseTransition(Duration.seconds(1));
+//            wait.setOnFinished((e) -> {
+//                /*YOUR METHOD*/
+//
+//            });
+//            });
+        // implement progress bar
+//        progressBar.setStyle("-fx-accent: red");
+//        float current_progress = 0f;
+//        for(int i = 0; i < 10; i++)  {
+//            current_progress += 0.02;
+//            progressBar.setProgress(current_progress);
+//        }
+
         if(current_state <= 6) {
             Boolean noData; // bool to put result into from getQuestion function -> do we get data from db or not (if it is last question we don't)
 
@@ -262,7 +328,30 @@ public class QuestionController implements Initializable {
             // current state == 6 -> 6 questions have been displayed in total
 
         }
-
+//        Timeline timeline = new Timeline(
+//                //I only use two keyframes instead of three
+//                new KeyFrame(Duration.seconds(10), e-> {
+//                }, new KeyValue(progressBar.progressProperty(), 1))
+//        );
+//        timeline.setCycleCount(1);
+//        timeline.play();
+//        loadNextQuestion();
+//        timeline.setOnFinished(event -> {
+//            //Main.setPane(questionNumber);
+//            //questionNumber++;
+//            loadNextQuestion();
+//            //The setProgress is added
+//            progressBar.setProgress(0.0F);
+//            timeline.play();
+//        });
+        for(int i = 0; i <= 10; i++) {
+            PauseTransition pt = new PauseTransition(Duration.seconds(1));
+            pt.setOnFinished(e -> {
+                timer_trigger.fire(); // trigger button
+            });
+            pt.play();
+        }
+//        progressBar.setProgress(0.0F);
     }
 
     // if answer A is clicked
@@ -295,6 +384,7 @@ public class QuestionController implements Initializable {
             }
             // disable all fields after answer was given
             disableAllFields();
+            //progressBar.setProgress(0.0);
             System.out.println("Current State: " + current_state);
             // load the next question for other player
             if(current_state != 6) {
@@ -362,6 +452,7 @@ public class QuestionController implements Initializable {
             }
             // disable all fields after answer was given
             disableAllFields();
+            //progressBar.setProgress(0.0);
             // load the next question for other player
             if(current_state != 6) {
                 loadNextQuestion();
@@ -404,6 +495,7 @@ public class QuestionController implements Initializable {
             }
             // disable all fields after answer was given
             disableAllFields();
+            //progressBar.setProgress(0.0);
             // load the next question for other player
             if(current_state != 6) {
                 loadNextQuestion();
@@ -446,6 +538,7 @@ public class QuestionController implements Initializable {
             }
             // disable all fields after answer was given
             disableAllFields();
+            //progressBar.setProgress(0.0);
             // load the next question for other player
             if(current_state != 6) {
                 loadNextQuestion();

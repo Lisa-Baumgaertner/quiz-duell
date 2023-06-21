@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import static com.example.bhtduell.QuestionController.primaryKeyQuestionAnswer;
@@ -66,7 +67,7 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void handle(ActionEvent event) throws IOException {
+    public void handle(ActionEvent event) throws IOException, SQLException {
         player1_error.setText("");
         player2_error.setText("");
         String player1 = username_1.getText();
