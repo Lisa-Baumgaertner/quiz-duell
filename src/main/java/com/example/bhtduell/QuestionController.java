@@ -43,6 +43,8 @@ public class QuestionController implements Initializable {
     private int current_state = 0; // this is used to check at how many questions were already displayed to determine when round is over
 
     private int question_counter = 0; // variable to keep track of question count (so we do not always get the same one)
+
+    private int[] answer_ids = new int[4]; // create array of size 4 to hold the 4 answer ids of the 4 answers for each question
     private Boolean clicked = false; // bool to indicate if a answer field was clicked already (i.e. that no other fields can be clicked anymore bc question already answered)
     private Boolean player1_active = false;
     private Boolean player2_active = false;
@@ -253,8 +255,24 @@ public class QuestionController implements Initializable {
                 // check if vector is not empty
 
                 // set up answer text fields
-                Vector answer_vec = JavaToDatabase.getAnswers(question_counter);// result set from query
+                List answer_list = JavaToDatabase.getAnswers(question_counter);// result set from query
+                Vector answer_id_vec = (Vector) answer_list.get(0); // get vector with answer ids from list
+                Vector answer_vec = (Vector) answer_list.get(1); // cast vector with answers text
+
+
+
                 if (!answer_vec.isEmpty()) {
+                    // now add answer ids from answer_id_vec to array answer_ids
+                    // so I can store the answer ids, where index 0 of array equals answer option A and so on
+                    // can use this later to check after a click if answer was true ore false
+                    System.out.println("answer_ids 1  " + answer_ids);
+                    answer_ids[0] = (int) answer_id_vec.get(0);
+                    answer_ids[1] = (int) answer_id_vec.get(1);
+                    answer_ids[2] = (int) answer_id_vec.get(2);
+                    answer_ids[3] = (int) answer_id_vec.get(3);
+                    System.out.println("answer_ids 2  " + answer_ids);
+
+
                     setWhichPlayerName();
                     current_state += 1;
                     System.out.println("vector " + answer_vec.toString());
@@ -361,25 +379,22 @@ public class QuestionController implements Initializable {
             clicked = true; // set to true if one field was clicked, so it is only clickable once, and not possible to change answer
             System.out.println(("Clicked A"));
             // get text from field
-            String txt_a = answer_A.getText();
-            //System.out.println(txt_a);
-            // then get primaryKeyQuestion variable bc it contains primary key of question in DB
-            //primaryKeyQuestion = String.valueOf(Integer.getInteger(primaryKeyQuestion));
-            System.out.println("primary key question answer  " + primaryKeyQuestionAnswer);
-            // we use answer text and question ID to identify answer and answer_Id -> to know if answer given is true or false
-            // we need to trace ack to question with just question_Id and text of clicked answer
-            Boolean answerStatus = JavaToDatabase.answerTrueFalse(txt_a, Integer.parseInt(primaryKeyQuestionAnswer));
+            //String txt_a = answer_A.getText();
+
+            // I use answer ID and question ID to identify answer and answer_Id -> to know if answer given is true or false
+            // to get asw_ID need to get respective element from array answer_ids (index 0: A, etc...)
+            Boolean answerStatus = JavaToDatabase.answerTrueFalse(answer_ids[0], Integer.parseInt(primaryKeyQuestionAnswer));
             //Boolean answerStatus = JavaToDatabase.answerTrueFalse(txt_a, primaryKeyQuestion);
             if (answerStatus == true) {
                 answer_A.setStyle("-fx-background-color: #70db70"); // set green
                 primaryKeyQuestionAnswer = Integer.toString(question_counter);
                 String activeUser = getActiveUser();
-                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), txt_a ,  answerStatus);
+                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), answer_ids[0] ,  answerStatus);
 
             } else {
                 answer_A.setStyle("-fx-background-color: #ff5c33"); // set red
                 String activeUser = getActiveUser();
-                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), txt_a ,  answerStatus);
+                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), answer_ids[0] ,  answerStatus);
 
             }
             // disable all fields after answer was given
@@ -392,8 +407,6 @@ public class QuestionController implements Initializable {
             }
             if (current_state == 6){
 
-                //System.out.println("Current State = 6");
-
                 // use PauseTransition to wait before triggering click button on our invisible go_final_button
                 // so we do not immediately skip to game results, but first see how last question was answered
                 PauseTransition pt = new PauseTransition(Duration.seconds(3));
@@ -402,32 +415,23 @@ public class QuestionController implements Initializable {
                 });
                 pt.play();
 
-                //o_final_btn.fire();
-
             }
         }
     }
 
     @FXML
     private void Click_final(ActionEvent event){
-        System.out.println("Click final 1");
+        // if answer clicked and nothing comes after, show final mask
         Parent root = null;
         try {
-            System.out.println("Click final 2");
             root = FXMLLoader.load(getClass().getResource("final.fxml"));
-            System.out.println("Click final 3");
-            //root.setFocusTraversable(true);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Click final 4");
+
         Stage window = (Stage) go_final_btn.getScene().getWindow();// typecast to Stage
         window.setScene((new Scene(root)));
-        System.out.println("Click final 5");
-  //      root = FXMLLoader.load(getClass().getResource("question.fxml"));
 
-//        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
-//        Scene scene = new Scene(fxmlLoader.load());//, 320, 240);
 
     }
     // if answer B is clicked
@@ -437,18 +441,18 @@ public class QuestionController implements Initializable {
             clicked = true;
             System.out.println(("Clicked B"));
             // get text from field
-            String txt_b = answer_B.getText();
-            // then get primaryKeyQuestion variable bc it contains primary key of question in DB
-            Boolean answerStatus = JavaToDatabase.answerTrueFalse(txt_b, Integer.parseInt(primaryKeyQuestionAnswer));
+            //String txt_b = answer_B.getText();
+            // access if answer is true or false with asw_ID and qu_ID
+            Boolean answerStatus = JavaToDatabase.answerTrueFalse(answer_ids[1], Integer.parseInt(primaryKeyQuestionAnswer));
             //Boolean answerStatus = JavaToDatabase.answerTrueFalse(txt_b,primaryKeyQuestion);
             if (answerStatus == true) {
                 answer_B.setStyle("-fx-background-color: #70db70");
                 String activeUser = getActiveUser();
-                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), txt_b ,  answerStatus);
+                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), answer_ids[1] ,  answerStatus);
             } else {
                 answer_B.setStyle("-fx-background-color: #ff5c33");
                 String activeUser = getActiveUser();
-                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), txt_b ,  answerStatus);
+                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), answer_ids[1] ,  answerStatus);
             }
             // disable all fields after answer was given
             disableAllFields();
@@ -480,18 +484,18 @@ public class QuestionController implements Initializable {
         if (clicked == false) {
             clicked = true;
             System.out.println(("Clicked C"));
-            String txt_c = answer_C.getText();
-            // then get primaryKeyQuestion variable bc it contains primary key of question in DB
-            Boolean answerStatus = JavaToDatabase.answerTrueFalse(txt_c, Integer.parseInt(primaryKeyQuestionAnswer));
+            //String txt_c = answer_C.getText();
+            // access if answer is true or false with asw_ID and qu_ID
+            Boolean answerStatus = JavaToDatabase.answerTrueFalse(answer_ids[2], Integer.parseInt(primaryKeyQuestionAnswer));
             //Boolean answerStatus = JavaToDatabase.answerTrueFalse(txt_c, primaryKeyQuestion);
             if (answerStatus == true) {
                 answer_C.setStyle("-fx-background-color: #70db70");
                 String activeUser = getActiveUser();
-                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), txt_c ,  answerStatus);
+                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), answer_ids[2] ,  answerStatus);
             } else {
                 answer_C.setStyle("-fx-background-color: #ff5c33");
                 String activeUser = getActiveUser();
-                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), txt_c ,  answerStatus);
+                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), answer_ids[2] ,  answerStatus);
             }
             // disable all fields after answer was given
             disableAllFields();
@@ -523,18 +527,18 @@ public class QuestionController implements Initializable {
         if (clicked == false) {
             clicked = true;
             System.out.println(("Clicked D"));
-            String txt_d = answer_D.getText();
-            // then get primaryKeyQuestion variable bc it contains primary key of question in DB
-            Boolean answerStatus = JavaToDatabase.answerTrueFalse(txt_d, Integer.parseInt(primaryKeyQuestionAnswer));
+            //String txt_d = answer_D.getText();
+            // access if answer is true or false with asw_ID and qu_ID
+            Boolean answerStatus = JavaToDatabase.answerTrueFalse(answer_ids[3], Integer.parseInt(primaryKeyQuestionAnswer));
             //Boolean answerStatus = JavaToDatabase.answerTrueFalse(txt_d, primaryKeyQuestion);
             if (answerStatus == true) {
                 answer_D.setStyle("-fx-background-color: #70db70");
                 String activeUser = getActiveUser();
-                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), txt_d ,  answerStatus);
+                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), answer_ids[3] ,  answerStatus);
             } else {
                 answer_D.setStyle("-fx-background-color: #ff5c33");
                 String activeUser = getActiveUser();
-                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), txt_d ,  answerStatus);
+                JavaToDatabase.trackScore(activeUser, Integer.valueOf(primaryKeyQuestionAnswer), answer_ids[3] ,  answerStatus);
             }
             // disable all fields after answer was given
             disableAllFields();

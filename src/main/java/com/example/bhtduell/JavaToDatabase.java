@@ -190,13 +190,12 @@ public class JavaToDatabase {
 
 
     }*/
-    public static Vector getAnswers ( int qu_counter){
-        /*Vector DBConnectData = connectData();
-        String url = (String) DBConnectData.get(0);
-        String user = (String) DBConnectData.get(1);
-        String pwd = (String) DBConnectData.get(2);*/
+    public static <Obj> List<Obj> getAnswers ( int qu_counter){
+
         // get answers from DB
-        String query_answer = "SELECT \"asw_text\" FROM game.\"Answers\"\n" +
+        List<Obj> aswResultList = new ArrayList<Obj>(); // list to store the two vectors in
+
+        String query_answer = "SELECT \"asw_ID\", \"asw_text\" FROM game.\"Answers\"\n" +
                 "WHERE \"asw_qu_ID\"=?;";
         System.out.println(query_answer);
         try (Connection connection = ConnectPostgresDB.getInstance().getConnection()){
@@ -212,21 +211,25 @@ public class JavaToDatabase {
                 // because ResultSet is difficult to access after
                 // Vector for question
                 Vector answerVector = new Vector();
-
+                Vector answerIDVector = new Vector();
                 while (rs.next()) {
-                    System.out.print("Column 1 returned ");
-                    System.out.println(rs.getString("asw_text"));
+                    //System.out.print("Column 1 returned ");
+                    //System.out.println(rs.getString("asw_text"));
+                    // add column w answer ids to vector
+                    answerIDVector.addElement(Integer.parseInt(rs.getString(1)));
                     // add column w question text to vector
-                    answerVector.addElement(new String(rs.getString(1)));
+                    answerVector.addElement(new String(rs.getString(2)));
 
                 }
 
+                aswResultList.add(0, (Obj) answerIDVector);
+                aswResultList.add(1, (Obj) answerVector);
 
                 rs.close();
                 prepared.close();
 
 
-                return answerVector;
+                return aswResultList;
 
             }
         } catch (SQLException except) {
@@ -244,7 +247,7 @@ public class JavaToDatabase {
 //        }
     }
 
-    public static Boolean answerTrueFalse(String answer_text, int primaryKey){
+    public static Boolean answerTrueFalse(int asw_id, int asw_qu_id){
         /*System.out.println("answerTrueFalse");
         Vector DBConnectData = connectData();
         String url = (String) DBConnectData.get(0);
@@ -252,15 +255,15 @@ public class JavaToDatabase {
         String pwd = (String) DBConnectData.get(2);*/
         // get answers from DB
         String query_bool = "SELECT \"asw_is_correct\" FROM game.\"Answers\"\n" +
-                "WHERE \"asw_text\"=? AND \"asw_qu_ID\"=?;";
+                "WHERE \"asw_ID\"=? AND \"asw_qu_ID\"=?;";
         //System.out.println(query_bool);
         try (Connection connection = ConnectPostgresDB.getInstance().getConnection()){
              // Get answers from DB
              PreparedStatement prepared = connection.prepareStatement(query_bool);{
-                // get answer text from db
+                // get answer text from db via asw_id (primary key)
                 // question_counter is in this case also id of question in database
-                prepared.setString(1, answer_text); // one is the question mark in query
-                prepared.setInt(2, primaryKey); // one is the question mark in query
+                prepared.setInt(1, asw_id); // one is the question mark in query
+                prepared.setInt(2, asw_qu_id); // one is the question mark in query
                 ResultSet rs = prepared.executeQuery();
 
                 // Vector class implements a growable array of objects
@@ -268,8 +271,8 @@ public class JavaToDatabase {
                 // because ResultSet is difficult to access after
                 // Vector for question
                 while (rs.next()) {
-                    System.out.print("Column 1 returned ");
-                    System.out.print(rs.getBoolean("asw_is_correct"));
+//                    System.out.print("Column 1 returned ");
+//                    System.out.print(rs.getBoolean("asw_is_correct"));
                     return rs.getBoolean("asw_is_correct");
 
                 }
@@ -287,7 +290,7 @@ public class JavaToDatabase {
     }
 
     // function to keep track of scores
-    public static void trackScore(String username, Integer game_qu_ID, String asw_txt, Boolean answerStatus){
+    public static void trackScore(String username, Integer game_qu_ID, Integer asw_id, Boolean answerStatus){
         // collects necessary data and inserts into db
 
         Integer points;
@@ -307,10 +310,8 @@ public class JavaToDatabase {
         //String query = "INSERT INTO game.\"Player\" (player_username) VALUES (?)";
         String query ="INSERT INTO game.\"Games\" (game_round, \"game_pl_ID\", \"game_qu_ID\", \"game_asw_ID\", game_points)" +
                       " VALUES ((SELECT round FROM game.\"Game_control\" WHERE \"control_ID\" = 0)," +
-                      "(SELECT \"player_ID\" FROM game.\"Player\" WHERE player_username = ?)," +
-                      "?," +
-                      "(SELECT \"asw_ID\" FROM game.\"Answers\"" +
-                      " WHERE \"asw_text\"=? AND \"asw_qu_ID\"=?), ?);";
+                      " (SELECT \"player_ID\" FROM game.\"Player\" WHERE player_username = ?)," +
+                      "?," + "?," + "?);";
 
         //System.out.println(query);
 
@@ -323,11 +324,11 @@ public class JavaToDatabase {
                 // game_qu_ID
                 prepared.setInt(2, game_qu_ID);
                 //asw_txt
-                prepared.setString(3, asw_txt);
+                prepared.setInt(3, asw_id );
                 //game_asw_ID
-                prepared.setInt(4, game_qu_ID);
+                //prepared.setInt(4, game_qu_ID);
                 // game_points
-                prepared.setInt(5, points);
+                prepared.setInt(4, points);
                 prepared.executeUpdate();
 
                 System.out.println("Action was successful!");
@@ -476,7 +477,7 @@ public class JavaToDatabase {
                 ResultSet rs = prepared.executeQuery();
                 while (rs.next()) {
                     // create string from results
-                    result_str_highscore += String.format("    %-40s %s\n", (new String(rs.getString(1))), new String(String.valueOf(rs.getInt(2))));
+                    result_str_highscore += String.format("%-40s %s\n", (new String(rs.getString(1))), new String(String.valueOf(rs.getInt(2))));
 
                 }
 
