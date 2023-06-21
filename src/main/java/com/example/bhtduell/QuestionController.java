@@ -592,7 +592,7 @@ public class QuestionController implements Initializable {
                primaryKeyQuestionAnswer = Integer.toString(question_counter);
 
                try {
-                   Thread.sleep(2500);
+                   Thread.sleep(1000);
                } catch (InterruptedException e) {
                    e.printStackTrace();
                    throw new RuntimeException(e);
