@@ -108,7 +108,6 @@ public class Controller implements Initializable {
                 JavaToDatabase.writePlayerToDB(player2_name);
             }
             successful_login.setText("Successfully logged in as " + player1 + " and " + player2);
-            //JavaToDatabase.writePlayerToDB(player1, player2);
 
             // change scene here
             Parent root = null;
