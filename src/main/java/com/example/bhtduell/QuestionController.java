@@ -112,15 +112,15 @@ public class QuestionController implements Initializable {
             player1_active = false;
         }
 
-        for(int i = 0; i <= 10; i++){
-            PauseTransition pt = new PauseTransition(Duration.seconds(1));
-            pt.setOnFinished(e -> {
-                timer_trigger.fire(); // trigger button
-            });
-            pt.play();
-
-
-        }
+//        for(int i = 0; i <= 10; i++){
+//            PauseTransition pt = new PauseTransition(Duration.seconds(1));
+//            pt.setOnFinished(e -> {
+//                timer_trigger.fire(); // trigger button
+//            });
+//            pt.play();
+//
+//
+//        }
 
         /*// implement progress bar
         progressBar.setStyle("-fx-accent: red");
@@ -151,24 +151,24 @@ public class QuestionController implements Initializable {
 
     }
 
-    @FXML
-    public void myTimer(ActionEvent e){
-        // set progress to different level of progressbar
-        double ii = 0.0;
-        ii += 0.1;
-        progressBar.setProgress(ii);
-
-
-
-    }
+//    @FXML
+//    public void myTimer(ActionEvent e){
+//        // set progress to different level of progressbar
+//        double ii = 0.0;
+//        ii += 0.1;
+//        progressBar.setProgress(ii);
+//
+//
+//
+//    }
     // function to decrease progress in Progress bar -> time running out
-    public void decreaseProgress(){
-
-        progressBar.setStyle("-fx-accent: red;");
-        progress -= 0.1; // decrease by 0.1 -> by 10%
-        progressBar.setProgress(progress);
-
-    }
+//    public void decreaseProgress(){
+//
+//        progressBar.setStyle("-fx-accent: red;");
+//        progress -= 0.1; // decrease by 0.1 -> by 10%
+//        progressBar.setProgress(progress);
+//
+//    }
 
     // question_counter is increased to get next question from db
     @FXML
@@ -362,13 +362,13 @@ public class QuestionController implements Initializable {
 //            progressBar.setProgress(0.0F);
 //            timeline.play();
 //        });
-        for(int i = 0; i <= 10; i++) {
-            PauseTransition pt = new PauseTransition(Duration.seconds(1));
-            pt.setOnFinished(e -> {
-                timer_trigger.fire(); // trigger button
-            });
-            pt.play();
-        }
+//        for(int i = 0; i <= 10; i++) {
+//            PauseTransition pt = new PauseTransition(Duration.seconds(1));
+//            pt.setOnFinished(e -> {
+//                timer_trigger.fire(); // trigger button
+//            });
+//            pt.play();
+//        }
 //        progressBar.setProgress(0.0F);
     }
 

@@ -2,6 +2,7 @@ package com.example.bhtduell;
 
 import java.sql.*; //Any source file that uses JDBC needs to import the java.sql package
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -27,7 +28,45 @@ public class JavaToDatabase {
 
     }
 
-    public static void writePlayerToDB(String username_1, String username_2) throws SQLException {
+    // Heike's function
+    // to check if username already exists in database
+    public static Boolean verifyPlayerNameExists(String username) {
+        // connect to db
+//        Vector DBConnectData = connectData();
+//        String url = (String) DBConnectData.get(0);
+//        String user = (String) DBConnectData.get(1);
+//        String pwd = (String) DBConnectData.get(2);
+
+        String playername = username;
+        Boolean status = true;
+
+        // the query
+        String query_verifyName = "SELECT EXISTS ( SELECT * FROM game.\"Player\" WHERE \"player_username\"=\'" +
+                playername + "\') AS exists;";
+        System.out.println("QUERY" + query_verifyName);
+
+        try (Connection connection = ConnectPostgresDB.getInstance().getConnection()) {
+             // Get answers from DB
+             PreparedStatement prepared = connection.prepareStatement(query_verifyName);{
+                // if exists return true else false as db vector
+                ResultSet rs = prepared.executeQuery();
+                while (rs.next()) {
+                    status = rs.getBoolean(1);
+
+                }
+                rs.close();
+                prepared.close();
+            }
+        } catch (SQLException except) {
+            Logger logger = Logger.getLogger(JavaToDatabase.class.getName());
+            logger.log(Level.SEVERE, except.getMessage(), except);
+            return null;
+        }
+
+        return status;
+    }
+
+    public static void writePlayerToDB(String username) throws SQLException {
 
         // set up for db
         /*String url = "jdbc:postgresql://localhost:5432/postgres"; // follow schema: jdbc:postgresql://host:port/database
@@ -39,8 +78,8 @@ public class JavaToDatabase {
         String user = (String) DBConnectData.get(1);
         String pwd = (String) DBConnectData.get(2);*/
 
-        String playername_1 = username_1;
-        String playername_2 = username_2;
+        String playername = username;
+        //String playername_2 = username_2;
 
         // the query
         String query = "INSERT INTO game.\"Player\" (player_username) VALUES (?)";
@@ -50,15 +89,16 @@ public class JavaToDatabase {
             PreparedStatement prepared = connection.prepareStatement(query);
             {
                 // for player1
-                prepared.setString(1, playername_1);
+                prepared.setString(1, playername);
                 prepared.executeUpdate();
 
                 // for player2
-                prepared.setString(1, playername_2);
-                prepared.executeUpdate();
+//                prepared.setString(1, playername_2);
+//                prepared.executeUpdate();
                 System.out.println("Action was successful!");
 
             }
+            prepared.close();
         } catch (SQLException except) {
             Logger logger = Logger.getLogger(JavaToDatabase.class.getName());
             logger.log(Level.SEVERE, except.getMessage(), except);
@@ -453,12 +493,11 @@ public class JavaToDatabase {
 
 
     // function to get highscores across all rounds -> who has the highest amount of points across all games played
-    public static String getResultsHighscore(){
-        /*Vector DBConnectData = connectData();
-        String url = (String) DBConnectData.get(0);
-        String user = (String) DBConnectData.get(1);
-        String pwd = (String) DBConnectData.get(2);*/
+    public static <Obj>List<Obj> getResultsHighscore(){
 
+        List<Obj> highscore_summary = new ArrayList<Obj>();
+        //String [] highscore_player_arr = new String[2];
+        List<Obj> highscore_player_list = new ArrayList<Obj>();
         // get scores
         String query ="SELECT player_username, SUM(game_points) as score FROM game.\"Games\"\n" +
                 "JOIN game.\"Player\" ON \"game_pl_ID\"=\"player_ID\"\n" +
@@ -466,25 +505,35 @@ public class JavaToDatabase {
                 "ORDER BY score desc\n" +
                 "LIMIT 5";
 
+        Vector playerVector = new Vector();
+        Vector scoreVector = new Vector();
         try (Connection connection = ConnectPostgresDB.getInstance().getConnection()){
              PreparedStatement prepared = connection.prepareStatement(query);
             {
                 // set round
                 //prepared.setInt(1, 3);
                 prepared.executeQuery();
-
+                String [][] back = new String[5][5];
                 String result_str_highscore = "";
                 ResultSet rs = prepared.executeQuery();
                 while (rs.next()) {
                     // create string from results
-                    result_str_highscore += String.format("%-40s %s\n", (new String(rs.getString(1))), new String(String.valueOf(rs.getInt(2))));
+                    //result_str_highscore += (new String(rs.getString(1)) new String(String.valueOf(rs.getInt(2))));
+                    playerVector.addElement(new String(rs.getString(1)));
+                    //System.out.println("Java db 0 " + highscore_player_list.get(0));
+                    scoreVector.addElement(new String(String.valueOf(rs.getInt(2))));
+                    //System.out.println("Java db 1 " + highscore_player_list.get(1));
 
+                    //System.out.println(result_str_highscore);
                 }
+                //highscore_summary.addAll((Collection<? extends Obj>) highscore_player_list);
+                highscore_summary.add(0, (Obj) playerVector);
+                highscore_summary.add(1, (Obj) scoreVector);
 
                 rs.close();
                 prepared.close();
-                System.out.println(result_str_highscore);
-                return result_str_highscore;
+                //System.out.println(result_str_highscore);
+                return highscore_summary;
             }
         } catch (SQLException except) {
             Logger logger = Logger.getLogger(JavaToDatabase.class.getName());

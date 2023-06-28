@@ -20,7 +20,7 @@
                         <Font name="System Bold" size="12.0" />
                     </font>
                 </Button>
-            <TextField fx:id="highscore_header_player" alignment="CENTER" editable="false" layoutX="195.0" layoutY="157.0" prefHeight="25.0" prefWidth="105.0" text="Player">
+            <TextField fx:id="highscore_header_player" alignment="CENTER" editable="false" layoutX="196.0" layoutY="157.0" prefHeight="25.0" prefWidth="105.0" text="Player">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></TextField>
@@ -28,7 +28,8 @@
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></TextField>
-            <TextArea fx:id="highscore_body" editable="false" layoutX="195.0" layoutY="182.0" prefHeight="120.0" prefWidth="209.0" wrapText="true" />
+            <TextArea fx:id="highscore_body" editable="false" layoutX="301.0" layoutY="182.0" prefHeight="120.0" prefWidth="103.0" wrapText="true" />
+            <TextArea fx:id="player_body" editable="false" layoutX="197.0" layoutY="182.0" prefHeight="120.0" prefWidth="103.0" wrapText="true" />
             </children>
         </AnchorPane>
     </center>

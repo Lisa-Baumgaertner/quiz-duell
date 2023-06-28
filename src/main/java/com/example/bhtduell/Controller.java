@@ -67,6 +67,7 @@ public class Controller implements Initializable {
     }
 
     @FXML
+    // function called when login button is pressed
     public void handle(ActionEvent event) throws IOException, SQLException {
         player1_error.setText("");
         player2_error.setText("");
@@ -90,9 +91,24 @@ public class Controller implements Initializable {
         if ((!player1.isEmpty()) && (!player2.isEmpty())) {
             player1_name = player1;
             player2_name = player2;
-            System.out.printf("Logged in as %s %s", player1, player2);
+            Boolean player_exists = false;
+            // check if player1_name is already in DB or not
+            // if not then write him into DB, else don't write to DB
+            // get boolean
+            player_exists = JavaToDatabase.verifyPlayerNameExists(player1_name);
+            System.out.println("player 1 exists  " + player_exists);
+            if (player_exists == false){
+                JavaToDatabase.writePlayerToDB(player1_name);
+
+            }
+
+            player_exists = JavaToDatabase.verifyPlayerNameExists(player2_name);
+            System.out.println("player 2 exists  " + player_exists);
+            if (player_exists == false){
+                JavaToDatabase.writePlayerToDB(player2_name);
+            }
             successful_login.setText("Successfully logged in as " + player1 + " and " + player2);
-            JavaToDatabase.writePlayerToDB(player1, player2);
+            //JavaToDatabase.writePlayerToDB(player1, player2);
 
             // change scene here
             Parent root = null;
