@@ -214,8 +214,7 @@ ALTER TABLE game."Games" ALTER COLUMN "game_ID" ADD GENERATED ALWAYS AS IDENTITY
 
 CREATE TABLE game."Player" (
     "player_ID" bigint NOT NULL,
-    player_username character varying(100) NOT NULL,
-    player_highscore bigint
+    player_username character varying(100) NOT NULL
 );
 
 
@@ -240,13 +239,6 @@ COMMENT ON COLUMN game."Player"."player_ID" IS 'ID of player ';
 --
 
 COMMENT ON COLUMN game."Player".player_username IS 'Username of player';
-
-
---
--- Name: COLUMN "Player".player_highscore; Type: COMMENT; Schema: game; Owner: postgres
---
-
-COMMENT ON COLUMN game."Player".player_highscore IS 'Highscore of player';
 
 
 --
@@ -385,7 +377,7 @@ COPY game."Answers" ("asw_ID", "asw_qu_ID", asw_text, asw_is_correct) FROM stdin
 --
 
 COPY game."Game_control" ("control_ID", round, "last_qu_ID") FROM stdin;
-0	174	11
+0	204	0
 \.
 
 
@@ -394,6 +386,154 @@ COPY game."Game_control" ("control_ID", round, "last_qu_ID") FROM stdin;
 --
 
 COPY game."Games" ("game_ID", game_round, "game_pl_ID", "game_qu_ID", "game_asw_ID", game_points) FROM stdin;
+754	178	412	0	2	1
+755	178	413	1	7	1
+756	178	412	2	11	0
+757	178	413	3	15	1
+758	178	412	4	19	1
+759	178	413	5	23	1
+760	179	413	6	26	1
+761	179	412	7	31	0
+762	179	413	8	36	0
+763	179	412	9	39	0
+764	179	413	10	43	1
+765	179	412	11	46	1
+766	180	413	12	50	1
+767	180	412	13	55	1
+768	180	413	14	60	1
+769	181	413	1	7	1
+770	181	412	2	10	0
+771	181	413	3	15	1
+772	181	412	4	19	1
+773	181	413	5	23	1
+774	181	412	6	27	0
+775	182	414	0	3	0
+776	182	415	1	7	1
+777	182	414	2	10	0
+778	182	415	3	15	1
+779	182	414	4	20	0
+780	182	415	5	23	1
+781	183	415	0	3	0
+782	183	414	1	7	1
+783	183	415	2	11	0
+784	183	414	3	15	1
+785	183	415	4	19	1
+786	183	414	5	23	1
+787	184	415	0	2	1
+788	184	414	1	7	1
+789	184	415	2	11	0
+790	184	414	3	15	1
+791	184	415	4	19	1
+792	184	414	5	23	1
+793	185	415	0	2	1
+794	185	414	1	7	1
+795	185	415	2	11	0
+796	185	414	3	15	1
+797	185	415	4	19	1
+798	185	414	5	23	1
+799	186	415	0	2	1
+800	186	414	1	7	1
+801	186	415	2	11	0
+802	186	414	3	15	1
+803	186	415	4	20	0
+804	186	414	5	23	1
+805	187	415	0	3	0
+806	187	414	1	7	1
+807	187	415	2	11	0
+808	187	414	3	15	1
+809	187	415	4	19	1
+810	187	414	5	23	1
+811	188	414	0	3	0
+812	188	415	1	7	1
+813	188	414	2	11	0
+814	188	415	3	15	1
+815	188	414	4	20	0
+816	188	415	5	23	1
+817	189	415	0	3	0
+818	189	414	1	7	1
+819	189	415	2	12	1
+820	189	414	3	14	0
+821	189	415	4	19	1
+822	189	414	5	24	0
+823	190	415	0	3	0
+824	190	414	1	8	0
+825	190	415	2	10	0
+826	190	414	3	15	1
+827	190	415	4	20	0
+828	190	414	5	24	0
+829	191	415	0	3	0
+830	191	414	1	7	1
+831	191	415	2	11	0
+832	191	414	3	16	0
+833	191	415	4	19	1
+834	191	414	5	23	1
+835	192	415	0	3	0
+836	192	414	1	7	1
+837	192	415	2	11	0
+838	192	414	3	15	1
+839	192	415	4	19	1
+840	192	414	5	23	1
+841	193	415	0	3	0
+842	193	414	1	9	0
+843	193	415	2	11	0
+844	193	414	3	15	1
+845	194	415	0	3	0
+846	194	414	1	9	0
+847	194	415	2	11	0
+848	194	414	3	14	0
+849	194	415	4	19	1
+850	194	414	5	23	1
+851	195	415	0	2	1
+852	195	414	1	7	1
+853	195	415	2	12	1
+854	195	414	3	15	1
+855	195	415	4	19	1
+856	195	414	5	24	0
+857	196	415	0	3	0
+858	196	414	1	8	0
+859	196	415	2	11	0
+860	196	414	3	14	0
+861	196	415	4	20	0
+862	196	414	5	24	0
+863	197	415	0	3	0
+864	197	414	1	7	1
+865	197	415	2	13	0
+866	197	414	3	15	1
+867	197	415	4	19	1
+868	197	414	5	22	0
+869	198	415	0	4	0
+870	198	414	1	7	1
+871	198	415	2	10	0
+872	198	414	3	15	1
+873	198	415	4	19	1
+874	198	414	5	23	1
+875	199	415	0	3	0
+876	199	414	1	7	1
+877	199	415	2	12	1
+878	199	414	3	15	1
+879	199	415	4	19	1
+880	199	414	5	23	1
+881	200	415	0	3	0
+882	200	414	1	7	1
+883	200	415	2	11	0
+884	201	414	0	3	0
+885	201	415	1	7	1
+886	201	414	2	13	0
+887	201	415	3	16	0
+888	201	414	4	19	1
+889	201	415	5	24	0
+890	202	417	0	3	0
+891	202	416	1	7	1
+892	202	417	2	13	0
+893	202	416	3	14	0
+894	202	417	4	19	1
+895	202	416	5	23	1
+896	203	418	0	3	0
+897	203	419	1	7	1
+898	203	418	2	10	0
+899	203	419	3	15	1
+900	203	418	4	19	1
+901	203	419	5	25	0
 \.
 
 
@@ -401,7 +541,19 @@ COPY game."Games" ("game_ID", game_round, "game_pl_ID", "game_qu_ID", "game_asw_
 -- Data for Name: Player; Type: TABLE DATA; Schema: game; Owner: postgres
 --
 
-COPY game."Player" ("player_ID", player_username, player_highscore) FROM stdin;
+COPY game."Player" ("player_ID", player_username) FROM stdin;
+410	lisa
+411	lena
+412	ernie
+413	bert
+414	Mickey_Mouse
+415	Donald_Duck
+416	Madonna
+417	Cher
+418	Elon Musk
+419	Jeff Bezos
+420	Tom
+421	Jerry
 \.
 
 
@@ -446,14 +598,14 @@ SELECT pg_catalog.setval('game."Game_control_control_ID_seq"', 0, true);
 -- Name: Games_game_ID_seq; Type: SEQUENCE SET; Schema: game; Owner: postgres
 --
 
-SELECT pg_catalog.setval('game."Games_game_ID_seq"', 746, true);
+SELECT pg_catalog.setval('game."Games_game_ID_seq"', 901, true);
 
 
 --
 -- Name: Player_player_ID_seq; Type: SEQUENCE SET; Schema: game; Owner: postgres
 --
 
-SELECT pg_catalog.setval('game."Player_player_ID_seq"', 405, true);
+SELECT pg_catalog.setval('game."Player_player_ID_seq"', 421, true);
 
 
 --
