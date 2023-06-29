@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bhtduell.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bhtduell.LoginController">
     <left>
         <AnchorPane prefHeight="200.0" prefWidth="170.0" BorderPane.alignment="CENTER">
             <children>
@@ -37,7 +38,7 @@
                     <font>
                         <Font name="Berlin Sans FB Demi Bold" size="13.0" />
                     </font></Button>
-                <Label layoutX="57.0" layoutY="31.0" prefHeight="72.0" prefWidth="283.0" text="Quizzduel" textFill="#ff8f27">
+                <Label layoutX="57.0" layoutY="31.0" prefHeight="72.0" prefWidth="283.0" text="Quizzduell" textFill="#ff8f27">
                     <font>
                         <Font name="Berlin Sans FB" size="48.0" />
                     </font>
