@@ -142,8 +142,6 @@ public class JavaToDatabase {
                 Vector answerVector = new Vector();
                 Vector answerIDVector = new Vector();
                 while (rs.next()) {
-                    //System.out.print("Column 1 returned ");
-                    //System.out.println(rs.getString("asw_text"));
                     // add column w answer ids to vector
                     answerIDVector.addElement(Integer.parseInt(rs.getString(1)));
                     // add column w question text to vector
@@ -217,7 +215,6 @@ public class JavaToDatabase {
         }
 
         // the query
-        //String query = "INSERT INTO game.\"Player\" (player_username) VALUES (?)";
         String query ="INSERT INTO game.\"Games\" (game_round, \"game_pl_ID\", \"game_qu_ID\", \"game_asw_ID\", game_points)" +
                       " VALUES ((SELECT round FROM game.\"Game_control\" WHERE \"control_ID\" = 0)," +
                       " (SELECT \"player_ID\" FROM game.\"Player\" WHERE player_username = ?)," +
@@ -304,7 +301,6 @@ public class JavaToDatabase {
         try (Connection connection = ConnectPostgresDB.getInstance().getConnection()){
              PreparedStatement prepared = connection.prepareStatement(query);
             {
-                // set round
                 prepared.executeQuery();
 
                 Vector winnerVector = new Vector();

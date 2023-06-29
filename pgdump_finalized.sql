@@ -377,7 +377,7 @@ COPY game."Answers" ("asw_ID", "asw_qu_ID", asw_text, asw_is_correct) FROM stdin
 --
 
 COPY game."Game_control" ("control_ID", round, "last_qu_ID") FROM stdin;
-0	204	0
+0	216	5
 \.
 
 
@@ -534,6 +534,58 @@ COPY game."Games" ("game_ID", game_round, "game_pl_ID", "game_qu_ID", "game_asw_
 899	203	419	3	15	1
 900	203	418	4	19	1
 901	203	419	5	25	0
+902	205	423	0	3	0
+903	205	422	1	7	1
+904	205	423	2	13	0
+905	205	422	3	15	1
+906	205	423	4	19	1
+907	205	422	5	24	0
+908	206	423	6	26	1
+909	206	422	7	31	0
+910	206	423	8	36	0
+911	206	422	9	39	0
+912	206	423	10	44	0
+913	206	422	11	46	1
+914	207	423	12	51	0
+915	207	422	13	55	1
+916	207	423	14	60	1
+917	209	413	0	3	0
+918	209	412	1	7	1
+919	209	413	2	10	0
+920	209	412	3	15	1
+921	210	413	0	3	0
+922	210	412	1	7	1
+923	210	413	2	10	0
+924	210	412	3	15	1
+925	210	413	4	19	1
+926	210	412	5	23	1
+927	211	413	6	27	0
+928	211	412	7	31	0
+929	211	413	8	34	1
+930	211	412	9	39	0
+931	211	413	10	43	1
+932	211	412	11	46	1
+933	212	413	12	51	0
+934	212	412	13	55	1
+935	212	413	14	60	1
+936	214	413	0	2	1
+937	214	412	1	7	1
+938	214	413	2	11	0
+939	214	412	3	15	1
+940	214	413	4	19	1
+941	214	412	5	24	0
+942	215	412	0	2	1
+943	215	413	1	7	1
+944	215	412	2	10	0
+945	215	413	3	15	1
+946	215	412	4	20	0
+947	215	413	5	23	1
+948	216	412	0	3	0
+949	216	413	1	8	0
+950	216	412	2	10	0
+951	216	413	3	15	1
+952	216	412	4	19	1
+953	216	413	5	23	1
 \.
 
 
@@ -554,6 +606,8 @@ COPY game."Player" ("player_ID", player_username) FROM stdin;
 419	Jeff Bezos
 420	Tom
 421	Jerry
+422	Pünktchen
+423	Anton
 \.
 
 
@@ -598,14 +652,14 @@ SELECT pg_catalog.setval('game."Game_control_control_ID_seq"', 0, true);
 -- Name: Games_game_ID_seq; Type: SEQUENCE SET; Schema: game; Owner: postgres
 --
 
-SELECT pg_catalog.setval('game."Games_game_ID_seq"', 901, true);
+SELECT pg_catalog.setval('game."Games_game_ID_seq"', 953, true);
 
 
 --
 -- Name: Player_player_ID_seq; Type: SEQUENCE SET; Schema: game; Owner: postgres
 --
 
-SELECT pg_catalog.setval('game."Player_player_ID_seq"', 421, true);
+SELECT pg_catalog.setval('game."Player_player_ID_seq"', 423, true);
 
 
 --
@@ -669,6 +723,14 @@ ALTER TABLE ONLY game."Answers"
 
 ALTER TABLE ONLY game."Games"
     ADD CONSTRAINT "Games_game_asw_ID_fkey" FOREIGN KEY ("game_asw_ID") REFERENCES game."Answers"("asw_ID") NOT VALID;
+
+
+--
+-- Name: Games Games_game_pl_ID_fkey; Type: FK CONSTRAINT; Schema: game; Owner: postgres
+--
+
+ALTER TABLE ONLY game."Games"
+    ADD CONSTRAINT "Games_game_pl_ID_fkey" FOREIGN KEY ("game_pl_ID") REFERENCES game."Player"("player_ID") NOT VALID;
 
 
 --

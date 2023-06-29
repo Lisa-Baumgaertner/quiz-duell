@@ -66,8 +66,6 @@ public class BuzzerController implements Initializable {
             Stage window = (Stage) keypress_a.getScene().getWindow(); // typecast to Stage
             window.setScene((new Scene(root)));
 
-            //window.setTitle("Let's see who's faster :)");
-
         }
         if (keyEvent.getCode() == KeyCode.K) {
             K_clicked = true;

@@ -68,14 +68,12 @@ public class FinalController implements Initializable {
     private void highscoreClicked(ActionEvent event) {
         Parent root = null;
         try {
-            //System.out.println("Click final 2");
             root = FXMLLoader.load(getClass().getResource("highscore.fxml"));
-            //System.out.println("Click final 3");
-            //root.setFocusTraversable(true);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        //System.out.println("Click final 4");
+
         Stage window = (Stage) highscore_button.getScene().getWindow();// typecast to Stage
         window.setScene((new Scene(root)));
 
@@ -87,26 +85,15 @@ public class FinalController implements Initializable {
         // on click new game button -> begin new game
         Parent root = null;
         try {
-            //System.out.println("Click final 2");
             root = FXMLLoader.load(getClass().getResource("login.fxml"));
-            //System.out.println("Click final 3");
-            //root.setFocusTraversable(true);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        //System.out.println("Click final 4");
+
         Stage window = (Stage) highscore_button.getScene().getWindow();// typecast to Stage
         window.setScene((new Scene(root)));
 
-        // try and set player names
-
-
-
-
     }
-
-
-
-
 
 }

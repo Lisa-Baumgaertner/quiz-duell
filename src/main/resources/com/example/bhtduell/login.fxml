@@ -36,7 +36,7 @@
                     <font>
                         <Font name="Berlin Sans FB Demi Bold" size="13.0" />
                     </font></Button>
-                <Label layoutX="57.0" layoutY="31.0" prefHeight="72.0" prefWidth="283.0" text="Quizzduel" textFill="#ff8f27">
+                <Label layoutX="57.0" layoutY="31.0" prefHeight="72.0" prefWidth="283.0" text="Quizzduell" textFill="#ff8f27">
                     <font>
                         <Font name="Berlin Sans FB" size="48.0" />
                     </font>

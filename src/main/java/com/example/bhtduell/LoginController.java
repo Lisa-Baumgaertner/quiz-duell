@@ -32,10 +32,10 @@ public class LoginController implements Initializable {
     private Label player2_error;
     @FXML
     private Label successful_login;
-    @FXML
-    private ImageView login_image_1;
-    @FXML
-    private ImageView login_image_2;
+//    @FXML
+//    private ImageView login_image_1;
+//    @FXML
+//    private ImageView login_image_2;
 
     @FXML
     private TextField username_1;

@@ -1,12 +1,8 @@
 package com.example.bhtduell;
 
-// imports for timer
 import java.util.*;
 
 import javafx.animation.*;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -49,8 +45,6 @@ public class QuestionController implements Initializable {
     private Boolean player1_active = false;
     private Boolean player2_active = false;
 
-    //@FXML
-    //private Button load;
 
     @FXML
     private Button go_final_btn; // button that is present on question answer mask but invisible, we use this to trigger scene change after game is over
@@ -64,7 +58,6 @@ public class QuestionController implements Initializable {
     @FXML
     //private TextField question_field;
     private TextArea question_field;
-    //private Label question_field;
 
     @FXML
     private TextField answer_A;
@@ -80,8 +73,8 @@ public class QuestionController implements Initializable {
 
     double progress;
 
-    @FXML
-    private Button timer_trigger;
+    //@FXML
+    //private Button timer_trigger;
 
     // this needs to be String otherwise we have problems later on with the vectors => fails with int
     public static String primaryKeyQuestionAnswer="0";
@@ -95,7 +88,7 @@ public class QuestionController implements Initializable {
 
         loadQuestionAnswer(); // we begin with 0 here to get first question
 
-        if (A_clicked == true){
+        if (A_clicked == true) {
             turn_player1.setText(player1_name);
             turn_player2.setText(player2_name);
             turn_player2.setVisible(false);
@@ -103,7 +96,7 @@ public class QuestionController implements Initializable {
             player1_active = true;
             player2_active = false;
         }
-        if (K_clicked == true){
+        if (K_clicked == true) {
             turn_player2.setText(player2_name);
             turn_player1.setText(player1_name);
             turn_player1.setVisible(false);
@@ -111,84 +104,11 @@ public class QuestionController implements Initializable {
             player2_active = true;
             player1_active = false;
         }
-
-//        for(int i = 0; i <= 10; i++){
-//            PauseTransition pt = new PauseTransition(Duration.seconds(1));
-//            pt.setOnFinished(e -> {
-//                timer_trigger.fire(); // trigger button
-//            });
-//            pt.play();
-//
-//
-//        }
-
-        /*// implement progress bar
-        progressBar.setStyle("-fx-accent: red");
-        float current_progress = 0f;
-        for(int i = 0; i < 10; i++)  {
-            current_progress += 0.02;
-            progressBar.setProgress(current_progress);
-        }*/
-
-
-
-//        Timeline timeline = new Timeline(
-//                new KeyFrame(Duration.ZERO, new KeyValue(progressBar.progressProperty(), 0)),
-//                new KeyFrame(Duration.minutes(0.3), e-> {
-//                    // do anything you need here on completion...
-//                    PauseTransition pt = new PauseTransition(Duration.seconds(3));
-//                    pt.setOnFinished(event -> {
-//                        loadNextQuestion(); // trigger button
-//                    });
-//                    pt.play();
-//                    System.out.println("Minute over");
-//
-//
-//                }, new KeyValue(progressBar.progressProperty(), 1))
-//        );
-//        timeline.setCycleCount(15);
-//        timeline.play();
-
     }
-
-//    @FXML
-//    public void myTimer(ActionEvent e){
-//        // set progress to different level of progressbar
-//        double ii = 0.0;
-//        ii += 0.1;
-//        progressBar.setProgress(ii);
-//
-//
-//
-//    }
-    // function to decrease progress in Progress bar -> time running out
-//    public void decreaseProgress(){
-//
-//        progressBar.setStyle("-fx-accent: red;");
-//        progress -= 0.1; // decrease by 0.1 -> by 10%
-//        progressBar.setProgress(progress);
-//
-//    }
 
     // question_counter is increased to get next question from db
     @FXML
     private void loadQuestionAnswer() throws IOException, SQLException {
-
-        //progressBar.setProgress(0.0);
-//        timeline.setOnFinished(event -> {
-//            PauseTransition wait = new PauseTransition(Duration.seconds(1));
-//            wait.setOnFinished((e) -> {
-//                /*YOUR METHOD*/
-//
-//            });
-//            });
-        // implement progress bar
-//        progressBar.setStyle("-fx-accent: red");
-//        float current_progress = 0f;
-//        for(int i = 0; i < 10; i++)  {
-//            current_progress += 0.02;
-//            progressBar.setProgress(current_progress);
-//        }
 
         if(current_state <= 6) {
             Boolean noData; // bool to put result into from getQuestion function -> do we get data from db or not (if it is last question we don't)
@@ -201,36 +121,12 @@ public class QuestionController implements Initializable {
             answer_C.setStyle("-fx-background-color: #ffefd6");
             answer_D.setStyle("-fx-background-color: #ffefd6");
 
-             /*if((player1_active != false) || (player2_active != false)) {
-                if (player1_active == true) {
-                    // now player2 active because previously player 1 active
-                    player2_active = true;
-                    turn_player2.setText(player2_name);
-                    turn_player2.setVisible(true);
-                    turn_player1.setVisible(false);
-                    player1_active = false;
-                    System.out.println("player2 name " + player2_name);
-
-                }
-                if (player2_active == true) {
-                    // now player1 active because previously player 2 active
-                    player1_active = true;
-                    turn_player1.setText(player1_name);
-                    turn_player1.setVisible(true);
-                    turn_player2.setVisible(false);
-                    player2_active = false;
-                    System.out.println("player1 name " + player1_name);
-
-                }
-            }*/
-
             // typecast from String to int
             question_counter = Integer.parseInt(primaryKeyQuestionAnswer);
             JavaToDatabase.updateControlLastQuestion(question_counter);
             System.out.println(primaryKeyQuestionAnswer + "  primary k q a");
 
             // set up question text field
-            //Vector question_vec = JavaToDatabase.getQuestion(question_counter); // result set from query
             List returnList = JavaToDatabase.getQuestion(question_counter); // result set from query
             // now get from List whether we get data from db -> boolean rsIsEmpty
             noData = (Boolean) returnList.get(0);
@@ -240,18 +136,13 @@ public class QuestionController implements Initializable {
                 Vector question_vec = (Vector) returnList.get(1);
                 // element at index 0 of question_vec is the qu_ID from DB
                 primaryKeyQuestionAnswer = (String) question_vec.get(0);
-                //primaryKeyQuestion = Integer.parseInt(question_vec.get(0));
-                System.out.println(primaryKeyQuestionAnswer);
 
                 // set TextField for question
                 String qu = (String) question_vec.get(1);
-                System.out.println("qu  " + qu);
                 question_field.setText("");
                 question_field.setText(qu); // typecast to string
-                //question_field.setStyle("-fx-focus-color: transparent;");
 
 
-                //System.out.println("answer_vec  " + answer_vec.toString());
                 // check if vector is not empty
 
                 // set up answer text fields
@@ -293,21 +184,7 @@ public class QuestionController implements Initializable {
                 } else {
 
                     System.out.println("vector " + answer_vec.toString());
-                    //throw new RuntimeException(e);
                     System.out.println("no more answers to laod in database: " + question_counter);
-
-                    // land here if there are no more questions in the database to load -> head to final mask
-                    // use PauseTransition to wait before triggering click button on our invisible go_final_button
-                    // so we do not immediately skip to game results, but first see how last question was answered
-/*
-                    PauseTransition pt = new PauseTransition(Duration.seconds(3));
-                    pt.setOnFinished(e -> {
-                        go_final_btn.fire(); // trigger button
-                    });
-                    pt.play();
-*/
-                    //go_final_btn.fire();
-
 
                 }
                 // also set fields to clickable again
@@ -342,34 +219,10 @@ public class QuestionController implements Initializable {
         }
         else{
             System.out.println("SOS ");
-            // load end mask here because end of round has been reached
             // current state == 6 -> 6 questions have been displayed in total
 
         }
-//        Timeline timeline = new Timeline(
-//                //I only use two keyframes instead of three
-//                new KeyFrame(Duration.seconds(10), e-> {
-//                }, new KeyValue(progressBar.progressProperty(), 1))
-//        );
-//        timeline.setCycleCount(1);
-//        timeline.play();
-//        loadNextQuestion();
-//        timeline.setOnFinished(event -> {
-//            //Main.setPane(questionNumber);
-//            //questionNumber++;
-//            loadNextQuestion();
-//            //The setProgress is added
-//            progressBar.setProgress(0.0F);
-//            timeline.play();
-//        });
-//        for(int i = 0; i <= 10; i++) {
-//            PauseTransition pt = new PauseTransition(Duration.seconds(1));
-//            pt.setOnFinished(e -> {
-//                timer_trigger.fire(); // trigger button
-//            });
-//            pt.play();
-//        }
-//        progressBar.setProgress(0.0F);
+
     }
 
     // if answer A is clicked
@@ -378,13 +231,10 @@ public class QuestionController implements Initializable {
         if (clicked == false) {
             clicked = true; // set to true if one field was clicked, so it is only clickable once, and not possible to change answer
             System.out.println(("Clicked A"));
-            // get text from field
-            //String txt_a = answer_A.getText();
 
             // I use answer ID and question ID to identify answer and answer_Id -> to know if answer given is true or false
             // to get asw_ID need to get respective element from array answer_ids (index 0: A, etc...)
             Boolean answerStatus = JavaToDatabase.answerTrueFalse(answer_ids[0], Integer.parseInt(primaryKeyQuestionAnswer));
-            //Boolean answerStatus = JavaToDatabase.answerTrueFalse(txt_a, primaryKeyQuestion);
             if (answerStatus == true) {
                 answer_A.setStyle("-fx-background-color: #70db70"); // set green
                 primaryKeyQuestionAnswer = Integer.toString(question_counter);
@@ -399,7 +249,6 @@ public class QuestionController implements Initializable {
             }
             // disable all fields after answer was given
             disableAllFields();
-            //progressBar.setProgress(0.0);
             System.out.println("Current State: " + current_state);
             // load the next question for other player
             if(current_state != 6) {
@@ -440,11 +289,7 @@ public class QuestionController implements Initializable {
         if (clicked == false) {
             clicked = true;
             System.out.println(("Clicked B"));
-            // get text from field
-            //String txt_b = answer_B.getText();
-            // access if answer is true or false with asw_ID and qu_ID
             Boolean answerStatus = JavaToDatabase.answerTrueFalse(answer_ids[1], Integer.parseInt(primaryKeyQuestionAnswer));
-            //Boolean answerStatus = JavaToDatabase.answerTrueFalse(txt_b,primaryKeyQuestion);
             if (answerStatus == true) {
                 answer_B.setStyle("-fx-background-color: #70db70");
                 String activeUser = getActiveUser();
@@ -456,14 +301,11 @@ public class QuestionController implements Initializable {
             }
             // disable all fields after answer was given
             disableAllFields();
-            //progressBar.setProgress(0.0);
             // load the next question for other player
             if(current_state != 6) {
                 loadNextQuestion();
             }
             if (current_state == 6){
-
-                //System.out.println("Current State = 6");
 
                 // use PauseTransition to wait before triggering click button on our invisible go_final_button
                 // so we do not immediately skip to game results, but first see how last question was answered
@@ -484,10 +326,8 @@ public class QuestionController implements Initializable {
         if (clicked == false) {
             clicked = true;
             System.out.println(("Clicked C"));
-            //String txt_c = answer_C.getText();
             // access if answer is true or false with asw_ID and qu_ID
             Boolean answerStatus = JavaToDatabase.answerTrueFalse(answer_ids[2], Integer.parseInt(primaryKeyQuestionAnswer));
-            //Boolean answerStatus = JavaToDatabase.answerTrueFalse(txt_c, primaryKeyQuestion);
             if (answerStatus == true) {
                 answer_C.setStyle("-fx-background-color: #70db70");
                 String activeUser = getActiveUser();
@@ -499,14 +339,11 @@ public class QuestionController implements Initializable {
             }
             // disable all fields after answer was given
             disableAllFields();
-            //progressBar.setProgress(0.0);
             // load the next question for other player
             if(current_state != 6) {
                 loadNextQuestion();
             }
             if (current_state == 6){
-
-                //System.out.println("Current State = 6");
 
                 // use PauseTransition to wait before triggering click button on our invisible go_final_button
                 // so we do not immediately skip to game results, but first see how last question was answered
@@ -527,10 +364,7 @@ public class QuestionController implements Initializable {
         if (clicked == false) {
             clicked = true;
             System.out.println(("Clicked D"));
-            //String txt_d = answer_D.getText();
-            // access if answer is true or false with asw_ID and qu_ID
             Boolean answerStatus = JavaToDatabase.answerTrueFalse(answer_ids[3], Integer.parseInt(primaryKeyQuestionAnswer));
-            //Boolean answerStatus = JavaToDatabase.answerTrueFalse(txt_d, primaryKeyQuestion);
             if (answerStatus == true) {
                 answer_D.setStyle("-fx-background-color: #70db70");
                 String activeUser = getActiveUser();
@@ -542,14 +376,11 @@ public class QuestionController implements Initializable {
             }
             // disable all fields after answer was given
             disableAllFields();
-            //progressBar.setProgress(0.0);
             // load the next question for other player
             if(current_state != 6) {
                 loadNextQuestion();
             }
             if (current_state == 6){
-
-                //System.out.println("Current State = 6");
 
                 // use PauseTransition to wait before triggering click button on our invisible go_final_button
                 // so we do not immediately skip to game results, but first see how last question was answered
@@ -592,7 +423,7 @@ public class QuestionController implements Initializable {
                primaryKeyQuestionAnswer = Integer.toString(question_counter);
 
                try {
-                   Thread.sleep(1000);
+                   Thread.sleep(1500);
                } catch (InterruptedException e) {
                    e.printStackTrace();
                    throw new RuntimeException(e);
@@ -610,11 +441,7 @@ public class QuestionController implements Initializable {
                }
                t.cancel();
            }
-       }, 1000);
-
-
-
-
+       }, 1500);
 
     }
 
@@ -654,7 +481,6 @@ public class QuestionController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("IN INITIALIZE!!");
         try {
             init();
         } catch (SQLException e) {
@@ -665,43 +491,4 @@ public class QuestionController implements Initializable {
 
     }
 
-    // create timer to switch to next question => so we get green/red color after click BEFORE loading new question
-/*public class MyTimerTask extends TimerTask {
-
-
-    //@Override
-//    public void run() {
-//        System.out.println("Timer task started at:" + new Date());
-//        completeTask();
-//        System.out.println("Timer task finished at:" + new Date());
-//    }
-
-    @Override
-    public void run() {
-        System.out.println("Timer task started at:" + new Date());
-        completeTask();
-        System.out.println("Timer task finished at:" + new Date());
-        //t.cancel();
-    }
-    }, 10000);
-
-    private void completeTask() {
-        try {
-
-            question_counter +=1;
-            primaryKeyQuestionAnswer = Integer.toString(question_counter);
-            //TimeUnit.SECONDS.sleep(5);
-            Thread.sleep(3000);
-            loadQuestionAnswer();
-
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-}*/
 }
