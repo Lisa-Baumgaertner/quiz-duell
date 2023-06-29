@@ -6,13 +6,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,7 +18,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import static com.example.bhtduell.QuestionController.primaryKeyQuestionAnswer;
-public class Controller implements Initializable {
+public class LoginController implements Initializable {
 
     // two global variables for the player names => later use in masks (e.g. "buzzer" & questions)
     public static String player1_name = "";

@@ -34,8 +34,8 @@ import java.util.concurrent.TimeUnit;
 // global variables
 import static com.example.bhtduell.BuzzerController.A_clicked;
 import static com.example.bhtduell.BuzzerController.K_clicked;
-import static com.example.bhtduell.Controller.player1_name;
-import static com.example.bhtduell.Controller.player2_name;
+import static com.example.bhtduell.LoginController.player1_name;
+import static com.example.bhtduell.LoginController.player2_name;
 
 
 

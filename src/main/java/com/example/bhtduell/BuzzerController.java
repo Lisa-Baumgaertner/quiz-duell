@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static com.example.bhtduell.Controller.player1_name;
-import static com.example.bhtduell.Controller.player2_name;
+import static com.example.bhtduell.LoginController.player1_name;
+import static com.example.bhtduell.LoginController.player2_name;
 
 // Initializable => to automatically load
 public class BuzzerController implements Initializable {
@@ -66,7 +66,7 @@ public class BuzzerController implements Initializable {
             Stage window = (Stage) keypress_a.getScene().getWindow(); // typecast to Stage
             window.setScene((new Scene(root)));
 
-            window.setTitle("Let's see who's faster :)");
+            //window.setTitle("Let's see who's faster :)");
 
         }
         if (keyEvent.getCode() == KeyCode.K) {
